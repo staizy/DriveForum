@@ -1,0 +1,23 @@
+﻿@model DriveForum.Models.User
+<html>
+<head>
+
+</head>
+<body>
+    <div>
+        <form method="post" asp-action="Log_in" asp-controller="Auth" asp-antiforgery="true">
+            <div>
+                <label>Логин:</label>
+                <input type="text" asp-for="Login" />
+                <span asp-validation-for="Login"></span>
+            </div>
+            <div>
+                <label>Пароль:</label>
+                <input type="text" asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <input type="submit" value="Войти" />
+        </form>
+    </div>
+</body>
+</html>
