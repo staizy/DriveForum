@@ -1,7 +1,15 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Runtime.Intrinsics.Arm;
+using DriveForum.ViewModels;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace DriveForum.Controllers
 {
@@ -19,29 +27,33 @@ namespace DriveForum.Controllers
             return View();
         }
 
-        /*public async Task<IActionResult> Register(string login, string password, string email, string username)
+        private async Task Auth(User user)
         {
-            if (ModelState.IsValid)
-            {
-                User user = new User(username, email, login, password);
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Redirect("../Home/MainPage");
-            }
-            else
-            {
-                return View("Registration");
-            }
-        }*/
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new List<Claim> { new Claim(ClaimTypes.Name, user.Login), },
+                    "Cookies"
+                )));
+        }
 
-        public async Task<IActionResult> Register(User newuser)
+        public async Task<IActionResult> Register(AuthUser newuser)
         {
             if (ModelState.IsValid)
             {
-                var user = new User(newuser.Username, newuser.Email, newuser.Login, newuser.Password);
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Redirect("../Home/MainPage");
+                using SHA256 hash = SHA256.Create();
+                var user = new User(
+                    newuser.Username,
+                    newuser.Email,
+                    newuser.Login,
+                    Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(newuser.Password))));
+                if ( await _context.Users.Where(u => u.Email == user.Email || u.Login == user.Login || u.Username == user.Username).FirstOrDefaultAsync() != null)
+                {
+                    ModelState.AddModelError("", "Такой логин/email/имя пользователя занято!");
+                    return View("Registration");
+                }
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+                return Redirect("../Auth/Login");
             }
             else
             {
@@ -49,15 +61,31 @@ namespace DriveForum.Controllers
             }
         }
 
-        public IActionResult Login(string login, string password)
+        public IActionResult Login()
         {
-            //if ()
             return View();
         }
 
-        public async Task<IActionResult> Log_in()
+        public async Task<IActionResult> Log_in(string login, string password)
         {
-            return BadRequest();
+            using SHA256 hash = SHA256.Create();
+            if (!string.IsNullOrWhiteSpace(login) && !string.IsNullOrWhiteSpace(password))
+            {
+                User? LoginUser = await _context.Users.Where(u => u.Login == login && u.Password == Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(password)))).FirstOrDefaultAsync();
+                if (LoginUser != null)
+                {
+                    await Auth(LoginUser);
+                    return Redirect("../Home/MainPage");
+                }
+            }
+            ModelState.AddModelError("", "Неправильный логин/пароль");
+            return View("Login");
+        }
+        [Authorize()]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("../Home/MainPage");
         }
     }
 }

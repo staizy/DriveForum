@@ -1,0 +1,58 @@
+﻿* {
+    font-family: 'Yandex Sans Text';
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+
+body {
+    background-color: #565656;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* изменение: чтобы элементы размещались по краям контейнера */
+    align-items: center;
+    background-color: #797979;
+    padding: 0; /* изменение: добавление отступа для красоты */
+    box-shadow: black 0px 2px 10px;
+}
+
+.driveForum {
+    display: flex;
+    box-shadow: black 0px 2px 10px;
+    background-color: #4d4d4d;
+    padding: 0 0 0 10px;
+    border-radius: 5px; /* изменение: закругляем углы кнопок */
+    margin: 5px 0 5px 5px;
+}
+
+.driveForum .df1 {
+    color: red;
+    margin: 5px 0 0 5px;
+}
+
+.driveForum .df2 {
+    color: white;
+    margin: 5px 18px 0 0px;
+    
+}
+
+.authButtons button {
+    margin-left: 10px;
+    padding: 8px 16px; /* изменение: добавляем отступы для кнопок */
+    border: none;
+    border-radius: 5px; /* изменение: закругляем углы кнопок */
+    background-color: #4e0000; /* изменение: цвет фона кнопок */
+    color: white;
+    text-align: center; /* изменение: выравниваем текст по центру */
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.authButtons button:hover {
+    background-color: #7a0000; /* изменение: изменение цвета фона при наведении */
+}

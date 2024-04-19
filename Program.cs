@@ -1,4 +1,5 @@
 using DriveForum.DatabaseContext;
+using DriveForum.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.LogoutPath = new PathString("/Home/Registration");
     });
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<Auth, Auth>();
+builder.Services.AddHttpContextAccessor();
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
@@ -25,7 +28,19 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=Registration}"
+    pattern: "{controller=Home}/{action=MainPage}"
     );
 
 app.Run();
+
+public class Auth
+{
+    public User? User { get; set; } = null;
+    public Auth(IHttpContextAccessor ctx, ApplicationContext db)
+    {
+        if (ctx.HttpContext?.User.Identity != null)
+        {
+            User = db.Users.Where(o => o.Login == ctx.HttpContext.User.Identity.Name).FirstOrDefault();
+        }
+    }
+}

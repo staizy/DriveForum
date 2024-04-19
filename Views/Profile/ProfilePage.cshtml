@@ -1,0 +1,25 @@
+﻿@inject Auth Auth
+@model DriveForum.Models.User
+<html>
+<head>
+    <body>
+        <form method="get" asp-action="ProfilePage" asp-controller="Profile" asp-route-id="@Model?.Login">
+            <div>
+                <label>Логин:</label>
+                @{
+                    if (Auth?.User?.Id == Model?.Id)
+                    {
+                        <span>ваш аккаукнт</span>
+                    }
+                    else
+                    {
+                        <span>не ваш аккаукнт</span>
+                    }
+                }
+                <label>@Model?.Role.ToString()</label>
+                <label>@Model?.Login</label>
+            </div>
+        </form>
+    </body>
+</head>
+</html>

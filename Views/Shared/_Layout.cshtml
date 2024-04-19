@@ -1,10 +1,32 @@
-﻿<html>
-    <head>
-
-    </head>
-    <body>
-        <h1>Header</h1>
-        @RenderBody()
-        <h1>Footer</h1>
-    </body>
+﻿@inject Auth Auth
+<html>
+<head>
+    <link href="/css/Main.css" rel="stylesheet" />
+    <title>DriveForum</title>
+</head>
+<body>
+    <div class="header">
+        <div class="driveForum">
+            <h1 class="df1">Drive</h1>
+            <h1 class="df2">Forum</h1>
+        </div>
+        <div class="authButtons">
+            @{
+                if (User?.Identity?.Name == null)
+                {
+                    <button><a asp-action="Login" asp-controller="Auth">Войти</a></button>
+                    <button><a asp-action="Registration" asp-controller="Auth">Зарегистрироваться</a></button>
+                }
+                else
+                {
+                    <div>
+                        <a asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Auth?.User?.Login">@Auth?.User?.Username</a>
+                        <button><a asp-action="Logout" asp-controller="Auth">Выйти</a></button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    @RenderBody()
+</body>
 </html>

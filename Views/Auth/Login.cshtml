@@ -1,4 +1,4 @@
-﻿@model DriveForum.Models.User
+﻿@model DriveForum.ViewModels.AuthUser
 <html>
 <head>
 
@@ -6,15 +6,14 @@
 <body>
     <div>
         <form method="post" asp-action="Log_in" asp-controller="Auth" asp-antiforgery="true">
+            <div asp-validation-summary="ModelOnly"></div>
             <div>
                 <label>Логин:</label>
                 <input type="text" asp-for="Login" />
-                <span asp-validation-for="Login"></span>
             </div>
             <div>
                 <label>Пароль:</label>
-                <input type="text" asp-for="Password" />
-                <span asp-validation-for="Password"></span>
+                <input type="password" asp-for="Password" />
             </div>
             <input type="submit" value="Войти" />
         </form>

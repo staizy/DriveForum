@@ -1,8 +1,12 @@
-﻿<html>
-    <head>
-        <link href="/css/Default.css" rel="stylesheet" />
-    </head>
-    <body>
-        hello guys
+﻿@inject Auth Auth;
+@{
+    string name = Auth?.User?.Username ?? "странник";
+}
+<html>
+<head>
+    <link href="/css/Default.css" rel="stylesheet" />
+</head>
+    <body>   
+        <h1>привет, @name</h1>
     </body>
 </html>
