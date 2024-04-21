@@ -8,7 +8,8 @@
         /// <summary>
         /// Айди машины, про которую пост
         /// </summary>
-        public int CarModelId { get; set; }
+        //public int CarModelId { get; set; }
+        public CarModel Car { get; set; }
         public string Title { get; set; }
         public string Main { get; set; }
         public string MainPhotoUrl { get; set; }
@@ -17,10 +18,12 @@
         /// <summary>
         /// Айди юзера, который сделал пост
         /// </summary>
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
+        public User User { get; set; }
         /// <summary>
         /// Список комментов, относяшихся к посту
         /// </summary>
         public List<Comment> Comments { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

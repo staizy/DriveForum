@@ -8,13 +8,14 @@
         /// <summary>
         /// Айди поста, на котором оставляем коммент
         /// </summary>
-        public int PostId { get; set; }
+        //public int PostId { get; set; }
         public string Context { get; set; }
         public DateTime CommentDate { get; set; } = DateTime.Now;
         public bool IsHidden { get; set; } = false;
         /// <summary>
         /// Айди юзера, который оставляет коммент
         /// </summary>
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

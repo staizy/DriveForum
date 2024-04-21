@@ -25,5 +25,24 @@ namespace DriveForum.Controllers
             if (user != null) return View(user);
             else return NotFound();
         }
+
+        public async Task<IActionResult> ChangeDesc(int id, string? description)
+        {
+            User? user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            if (user != null && description != null && description.Length <= 100)
+            {
+                user.Description = description;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                return Redirect($"../users/{user.Login}");
+
+            }
+            else if (description == null && description?.Length > 100)
+            {
+                ModelState.AddModelError("", "Слшиком длинное описание!");
+                return View("ProfilePage");
+            }
+            return Redirect($"../users/{user.Login}");
+        }
     }
 }

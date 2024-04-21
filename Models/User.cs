@@ -20,8 +20,8 @@
         public string Password { get; set; }
         public Roles Role { get; set; } = Roles.User;
         public bool IsBanned { get; set; } = false;
-        public List<UserPost>? UserPosts { get; set; } = null;
-        public List<Comment>? UserComments { get; set; } = null;
+        public List<UserPost>? UserPosts { get; set; } = new();
+        public List<Comment>? UserComments { get; set; } = new();
     }
     public enum Roles
     {
