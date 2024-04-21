@@ -2,6 +2,13 @@
 {
     public class UserPost
     {
+        public UserPost(Car car, string title, string main)
+        {
+            Car = car;
+            Title = title;
+            Main = main;
+        }
+
         public UserPost() { }
 
         public int Id { get; set; }
@@ -9,7 +16,7 @@
         /// Айди машины, про которую пост
         /// </summary>
         //public int CarModelId { get; set; }
-        public CarModel Car { get; set; }
+        public Car Car { get; set; }
         public string Title { get; set; }
         public string Main { get; set; }
         public string MainPhotoUrl { get; set; }
@@ -23,7 +30,7 @@
         /// <summary>
         /// Список комментов, относяшихся к посту
         /// </summary>
-        public List<Comment> Comments { get; set; }
-        public List<Tag> Tags { get; set; }
+        public List<Comment> Comments { get; set; } = new();
+        public List<Tag> Tags { get; set; } = new();
     }
 }

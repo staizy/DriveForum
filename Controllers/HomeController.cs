@@ -12,7 +12,7 @@ namespace DriveForum.Controllers
         {
             _context = context;
         }
-
+        //[Route("/")]
         public IActionResult MainPage()
         {
             return View();

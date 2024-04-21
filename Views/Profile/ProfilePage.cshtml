@@ -12,22 +12,29 @@
                             <span>Ваш логин: @Auth?.User?.Login</span><br/>
                             <span>Ваш никнейм: @Auth?.User?.Username</span><br/>
                             <span>Ваш e-mail: @Auth?.User?.Email</span><br/>
+                            <span>Описание профиля:<br /> @Auth?.User?.Description</span><br />
                         </div>
                     }
                     else
                     {
-                        <span>не ваш аккаукнт</span>
+                        <div>
+                            <span>Никнейм пользователя: @Model?.Username</span><br/>
+                            <span>E-mail пользователя: @Model?.Email</span><br/>
+                            <span>Описание профиля:<br/> @Model?.Description</span><br/>
+                        </div>
                     }
                 }
             </div>
         </form>
-        <span>Описание профиля: <br></br> @Auth?.User?.Description</span><br />
+        @if (Auth?.User?.Id == Model?.Id)
+        {
         <form method="post" asp-action="ChangeDesc" asp-controller="Profile">
             <div asp-validation-summary="ModelOnly"></div>
             <input type="hidden" name="id" value="@Auth?.User?.Id"/>
             <input type="text" asp-for="Description" />
             <input type="submit" value="Сохранить" />
         </form>
+        }
     </body>
 </head>
 </html>

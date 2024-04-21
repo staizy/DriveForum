@@ -4,6 +4,8 @@
     text-shadow: 1px 1px 1px black;
 }
 
+
+
 body {
     background-color: #565656;
     margin: 0;
@@ -26,6 +28,7 @@ body {
     padding: 0 0 0 10px;
     border-radius: 5px; /* изменение: закругляем углы кнопок */
     margin: 5px 0 5px 5px;
+    text-decoration: none;
 }
 
 .driveForum .df1 {

@@ -13,6 +13,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<Auth, Auth>();
+builder.Services.AddScoped<CarsContext, CarsContext>();
 builder.Services.AddHttpContextAccessor();
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -28,7 +29,7 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=MainPage}"
+    pattern: "{controller=Post}/{action=CreatePost}"
     );
 
 app.Run();
@@ -43,4 +44,19 @@ public class Auth
             User = db.Users.Where(o => o.Login == ctx.HttpContext.User.Identity.Name).FirstOrDefault();
         }
     }
+}
+
+public class CarsContext
+{
+    public CarsContext(ApplicationContext db)
+    {
+        CarBrands = db.CarBrands.ToList();
+        CarEngines = db.CarEngines.ToList();
+        CarModels = db.CarModels.ToList();
+        Cars = db.Cars.ToList();
+    }
+    public List<CarBrand>? CarBrands { get; set; }
+    public List<CarEngine>? CarEngines { get; set; }
+    public List<CarModel>? CarModels { get; set; }
+    public List<Car>? Cars { get; set; }
 }

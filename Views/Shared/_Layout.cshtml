@@ -6,22 +6,24 @@
 </head>
 <body>
     <div class="header">
-        <div class="driveForum">
-            <h1 class="df1">Drive</h1>
-            <h1 class="df2">Forum</h1>
+        <div>
+            <a class="driveForum" asp-controller="Home" asp-action="MainPage">
+                <h1 class="df1">Drive</h1>
+                <h1 class="df2">Forum</h1>
+            </a>
         </div>
         <div class="authButtons">
             @{
                 if (User?.Identity?.Name == null)
                 {
-                    <button><a asp-action="Login" asp-controller="Auth">Войти</a></button>
-                    <button><a asp-action="Registration" asp-controller="Auth">Зарегистрироваться</a></button>
+                    <a asp-action="Login" asp-controller="Auth"><button>Войти</button></a>
+                    <a asp-action="Registration" asp-controller="Auth"><button>Зарегистрироваться</button></a>
                 }
                 else
                 {
                     <div>
                         <a asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Auth?.User?.Login">@Auth?.User?.Username</a>
-                        <button><a asp-action="Logout" asp-controller="Auth">Выйти</a></button>
+                        <a asp-action="Logout" asp-controller="Auth"><button>Выйти</button></a>
                     </div>
                 }
             }

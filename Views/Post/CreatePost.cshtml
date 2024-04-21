@@ -1,0 +1,28 @@
+﻿@inject Auth Auth;
+@inject CarsContext CarsContext;
+@model DriveForum.Models.UserPost;
+
+<html>
+    <head>
+    </head>
+    <body>
+        <form asp-controller="Post" asp-action="CreatePost">
+        <select asp-for="Car.Id">
+            @{
+                foreach (var item in CarsContext.Cars.OrderBy(car=> car.Model.Brand.Name.ToString()).ToList())
+                {
+                    <option value="@item.Id">@item.Model.Brand.Name.ToString() @item.Model.Name.ToString() @item.Engine.Name.ToString() @item.Engine.Capacity.ToString()L</option>
+                }
+            }
+        </select>
+        <input type="submit" value="send" />
+        </form>
+    </body>
+</html>
+
+<style>
+    select, option{
+        font-size: 20px;
+        color: black;
+    }
+</style>
