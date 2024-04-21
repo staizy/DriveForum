@@ -3,7 +3,7 @@
 <html>
 <head>
     <body>
-        <form method="get" asp-action="ProfilePage" asp-controller="Profile" asp-route-id="@Model?.Login">
+        <form method="get" asp-action="ProfilePage" asp-controller="Profile" asp-route-login="@Model?.Login">
             <div>
                 @{
                     if (Auth?.User?.Id == Model?.Id)

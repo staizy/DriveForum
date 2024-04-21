@@ -29,7 +29,7 @@ namespace DriveForum.Controllers
         public async Task<IActionResult> ChangeDesc(int id, string? description)
         {
             User? user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
-            if (user != null && description != null && description.Length <= 100)
+            if (user != null && description?.Length <= 150 || string.IsNullOrEmpty(description))
             {
                 user.Description = description;
                 _context.Users.Update(user);
@@ -37,10 +37,10 @@ namespace DriveForum.Controllers
                 return Redirect($"../users/{user.Login}");
 
             }
-            else if (description == null && description?.Length > 100)
+            else if (description?.Length > 150)
             {
-                ModelState.AddModelError("", "Слшиком длинное описание!");
-                return View("ProfilePage");
+                ModelState.AddModelError("", "Описание не может содержать более 150 символов!");
+                return View("ProfilePage", user);
             }
             return Redirect($"../users/{user.Login}");
         }
