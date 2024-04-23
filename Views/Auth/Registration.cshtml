@@ -1,34 +1,37 @@
 ﻿@model DriveForum.ViewModels.AuthUser
 <html>
     <head>
-
+    <link href="/css/Auth.css" rel="stylesheet" />
     </head>
-    <body>
-    <div>
-        <form method="post" asp-action="Register" asp-controller="Auth" asp-antiforgery="true">
-            <div>
-                <div asp-validation-summary="ModelOnly"></div>
-                <label>Логин:</label>
-                <input type="text" asp-for="Login"/>
-                <span asp-validation-for="Login" ></span>
-            </div>
-            <div>
-                <label>Пароль:</label>
-                <input type="password" asp-for="Password" />
-                <span asp-validation-for="Password"></span>
-            </div>
-            <div>
-                <label>Email:</label>
-                <input type="text" asp-for="Email" />
-                <span asp-validation-for="Email"></span>
-            </div>
-            <div>
-                <label>Имя пользователя:</label>
-                <input type="text" asp-for="Username" />
-                <span asp-validation-for="Username"></span>
-            </div>
-            <input type="submit" value="Зарегистрироваться" />
-        </form>
+<body>
+    <div class="container">
+        <div class="registration-box">
+            <h2 class="registration-header">Регистрация</h2>
+            <form class="registration-form" method="post" asp-action="Register" asp-controller="Auth" asp-antiforgery="true">
+                <div class="form-group">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <label for="login">Логин:</label>
+                    <input type="text" id="login" name="login" required>
+                    <span asp-validation-for="Login"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group">
+                    <label for="username">Имя пользователя:</label>
+                    <input type="text" id="username" name="username" required>
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <button class="reg" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
     </div>
-    </body>
+</body>
 </html>

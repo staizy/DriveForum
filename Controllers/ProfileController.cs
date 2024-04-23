@@ -1,10 +1,6 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using DriveForum.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DriveForum.Controllers
@@ -43,6 +39,20 @@ namespace DriveForum.Controllers
                 return View("ProfilePage", user);
             }
             return Redirect($"../users/{user.Login}");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ShowUserPosts(int userId)
+        {
+            if (userId != null)
+            {
+                List<UserPost> userPosts = await _context.UserPosts
+                    .Include(u => u.User)
+                    .Include(c => c.Car)
+                    .Include(c => c.Car.Engine)
+                    .Include(c => c.Car.Model)
+                    .Where(u => u.User.Id == userId).ToListAsync();
+            }
+            return View();
         }
     }
 }

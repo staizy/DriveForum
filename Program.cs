@@ -29,7 +29,7 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Post}/{action=CreatePost}"
+    pattern: "{controller=Home}/{action=MainPage}"
     );
 
 app.Run();

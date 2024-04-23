@@ -1,0 +1,67 @@
+﻿/* CSS Code */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh; /* Используем минимальную высоту в 100% от высоты окна */
+    width: 100%; /* Расширяем контейнер на всю ширину */
+}
+
+.registration-box {
+    width: 400px; /* Устанавливаем ширину для registration-box */
+    padding: 40px;
+    border-radius: 20px;
+    background-color: #643636;
+    box-shadow: black 0 10px 10px;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #e4e4e4;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    color: black;
+    font-size: 15px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.registration-header {
+    text-align: center;
+    color: #e4e4e4;
+    font-size: 45px;
+    text-shadow: 3px 3px 3px black;
+    margin-top: 10px;
+
+}
+
+.reg {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d9534f;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+}
+
+button:hover {
+    background-color: #c9302c;
+}

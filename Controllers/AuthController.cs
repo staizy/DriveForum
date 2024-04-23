@@ -1,15 +1,14 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Runtime.Intrinsics.Arm;
 using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 
 namespace DriveForum.Controllers
 {
@@ -46,7 +45,7 @@ namespace DriveForum.Controllers
                     newuser.Email,
                     newuser.Login,
                     Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(newuser.Password))));
-                if ( await _context.Users.Where(u => u.Email == user.Email || u.Login == user.Login || u.Username == user.Username).FirstOrDefaultAsync() != null)
+                if (await _context.Users.Where(u => u.Email == user.Email || u.Login == user.Login || u.Username == user.Username).FirstOrDefaultAsync() != null)
                 {
                     ModelState.AddModelError("", "Такой логин/email/имя пользователя занято!");
                     return View("Registration");

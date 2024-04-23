@@ -1,22 +1,25 @@
 ﻿@model DriveForum.ViewModels.AuthUser
 <html>
 <head>
-
+    <link href="/css/Auth.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        <form method="post" asp-action="Log_in" asp-controller="Auth" asp-antiforgery="true">
-            <div asp-validation-summary="ModelOnly"></div>
-            <div>
-                <label>Логин:</label>
-                <input type="text" asp-for="Login" />
-            </div>
-            <div>
-                <label>Пароль:</label>
-                <input type="password" asp-for="Password" />
-            </div>
-            <input type="submit" value="Войти" />
-        </form>
+    <div class="container">
+        <div class="registration-box">
+            <h2 class="registration-header">Вход</h2>
+            <form class="registration-form" method="post" asp-action="Log_in" asp-controller="Auth" asp-antiforgery="true">
+                <div class="form-group">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <label>Логин:</label>
+                    <input type="text" asp-for="Login" required />
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" asp-for="Password" required />
+                </div>
+                <button class="reg" type="submit">Войти</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

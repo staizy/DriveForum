@@ -1,13 +1,19 @@
 ﻿@inject Auth Auth;
 @inject CarsContext CarsContext;
-@model DriveForum.Models.UserPost;
+@model DriveForum.ViewModels.CarAndUserPost;
 
 <html>
     <head>
     </head>
     <body>
-        <form asp-controller="Post" asp-action="CreatePost">
-        <select asp-for="Car.Id">
+    @if (Auth?.User == null)
+    {
+        <label>иди</label>
+    }
+    else
+    {
+    <form asp-controller="Post" asp-action="CreatePost" asp-route-userId="@Auth?.User?.Id">
+        <select asp-for="CarId">
             @{
                 foreach (var item in CarsContext.Cars.OrderBy(car=> car.Model.Brand.Name.ToString()).ToList())
                 {
@@ -15,8 +21,11 @@
                 }
             }
         </select>
+        <input type="text" asp-for="Title" />
+        <input type="text" asp-for="Main" />
         <input type="submit" value="send" />
         </form>
+        }
     </body>
 </html>
 
