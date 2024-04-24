@@ -1,5 +1,6 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
+using DriveForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,13 @@ namespace DriveForum.Controllers
         [HttpGet]
         public async Task<IActionResult> CreatePost()
         {
-            return View();
+            return View(new CarsAndUserPost()
+            {
+                CarBrands = _context.CarBrands.ToList(),
+                CarEngines = _context.CarEngines.ToList(),
+                CarModels = _context.CarModels.ToList(),
+                Cars = _context.Cars.ToList(),
+            });
         }
         [HttpPost]
         public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main)

@@ -1,6 +1,5 @@
 ﻿@inject Auth Auth;
-@inject CarsContext CarsContext;
-@model DriveForum.ViewModels.CarAndUserPost;
+@model DriveForum.ViewModels.CarsAndUserPost;
 
 <html>
     <head>
@@ -15,14 +14,19 @@
     <form asp-controller="Post" asp-action="CreatePost" asp-route-userId="@Auth?.User?.Id">
         <select asp-for="CarId">
             @{
-                foreach (var item in CarsContext.Cars.OrderBy(car=> car.Model.Brand.Name.ToString()).ToList())
+                foreach (var item in Model.Cars.OrderBy(car=> car.Model.Brand.Name.ToString()).ToList())
                 {
-                    <option value="@item.Id">@item.Model.Brand.Name.ToString() @item.Model.Name.ToString() @item.Engine.Name.ToString() @item.Engine.Capacity.ToString()L</option>
+                    <option value="@item.Id">
+                    @item.Model.Brand.Name.ToString()
+                    @item.Model.Name.ToString() 
+                    @item.Engine.Name.ToString()
+                    @item.Engine.Capacity.ToString()L</option>
                 }
             }
         </select>
         <input type="text" asp-for="Title" />
         <input type="text" asp-for="Main" />
+        <input type="file" asp-for="MainPhotoUrl" />
         <input type="submit" value="send" />
         </form>
         }
