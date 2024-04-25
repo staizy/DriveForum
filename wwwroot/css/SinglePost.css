@@ -1,0 +1,140 @@
+﻿/* Basic resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main container for the post */
+.mainpost {
+    width: 100%;
+    max-width: 1000px; /* Increased width for a broader layout */
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    background-color: #dddd;
+}
+
+.maincontainer {
+    padding: 10px 0 0 0;
+    display: flex;
+    flex-direction: row; /* Stack elements vertically */
+}
+
+/* Обновленный стиль для "leftside" */
+.upperinfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Разделяет элементы на разные концы */
+    padding: 0 10px; /* Немного отступа по горизонтали */
+    background-color: #ddd;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.profile-info {
+    margin: 5px 5px 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Разделяет элементы на разные концы */
+}
+
+/* Стиль для даты */
+.date {
+    font-size: 1em;
+    color: #555;
+    margin-right: 10px;
+    text-align: right; /* Выровнять текст по правому краю */
+    margin-left: 20px; /* Отступ слева для разделения от аватарки и никнейма */
+}
+
+/* Profile image */
+.profileimage {
+    width: 80px; /* Smaller profile image */
+    height: 80px;
+    border-radius: 50%; /* Circular image */
+    border: 2px solid #ddd; /* Border for a cleaner look */
+    margin-right: 15px; /* Space between profile image and username */
+}
+
+/* Username with a link to the profile */
+.username {
+    font-size: 1.2em; /* Larger font for visibility */
+    color: #333; /* Dark color */
+    text-decoration: none; /* No underline */
+}
+
+/* Upper section with car information */
+.upperside {
+    padding: 5px 5px 5px 5px;
+    font-size: 20px; /* Standard font size */
+    font-weight: bold;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #d73333; 
+}
+
+.mainside {
+    background-color: #666;
+    border-radius: 10px;
+}
+
+/* Title section */
+.title {
+    font-size: 45px; /* Larger title */
+    font-weight: bold;
+    background-color: #e9e9e9;
+    padding: 10px;
+}
+
+.title label {
+    padding: 0;
+    margin: auto;
+    color: #000000;
+}
+
+/* Main content area */
+.main {
+    padding: 10px;
+    margin-top: 10px;
+    width: 400px;
+    max-height: 300px;
+    font-size: 20px; /* Standard font size */
+    line-height: 2; /* Adjust the line spacing for readability */
+    color: #333;
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    display: -webkit-box; /* Flexible layout for multiple lines */
+    -webkit-box-orient: vertical; /* Vertical orientation */
+    -webkit-line-clamp: 5; /* Limit to 4 lines, adjust as needed */
+}
+
+
+
+/* Footer with post date */
+.footerdata {
+    margin-top: 20px;
+    font-size: 0.9em; /* Smaller font size */
+    color: #666; /* Lighter color */
+}
+
+/* Container for the car image */
+.carcontainer {
+    display: flex; /* Ensures the image respects the flex layout */
+    justify-content: center; /* Centers the image */
+    align-items: center; /* Vertically centers the image */
+    padding: 10px; /* Some padding for separation */
+}
+
+/* Car image with responsive dimensions */
+.carimage {
+    max-width: 100%; /* Ensure it doesn't overflow */
+    max-height: 100%; /* Keeps aspect ratio and limits size */
+    border: 2px solid #ddd; /* Border for a cleaner look */
+    border-radius: 10px; /* Slight rounding of corners */
+}
+
+.mainside .carcontainer {
+    flex: 1;
+}

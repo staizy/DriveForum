@@ -1,8 +1,10 @@
-﻿namespace DriveForum.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DriveForum.Models
 {
     public class UserPost
     {
-        public UserPost(Car car, string title, string main, string? mainPhotoUrl)
+        public UserPost(Car car, string title, string main, IFormFile? mainPhoto)
         {
             Car = car;
             Title = title;

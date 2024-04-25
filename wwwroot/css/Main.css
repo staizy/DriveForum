@@ -4,12 +4,14 @@
     text-shadow: 1px 1px 1px black;
 }
 
-
-
 body {
     background-color: #565656;
     margin: 0;
     padding: 0;
+}
+
+.dfblock {
+    margin: 5px 5px 5px 5px;
 }
 
 .header {
@@ -43,8 +45,8 @@ body {
 }
 
 .authButtons button {
-    margin-left: 10px;
     padding: 8px 16px; /* изменение: добавляем отступы для кнопок */
+    margin: 0 5px 0 5px;
     border: none;
     border-radius: 5px; /* изменение: закругляем углы кнопок */
     background-color: #4e0000; /* изменение: цвет фона кнопок */

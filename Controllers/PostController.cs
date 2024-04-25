@@ -1,6 +1,7 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,17 @@ namespace DriveForum.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Feed()
+        {
+            return View(_context.UserPosts
+                .Include(u=> u.User)
+                .Include(c=>c.Car.Model.Brand)
+                .Include(c=>c.Car.Engine)
+                .ToList());
+        }
+
         [HttpGet]
         public async Task<IActionResult> CreatePost()
         {
@@ -26,7 +38,7 @@ namespace DriveForum.Controllers
             });
         }
         [HttpPost]
-        public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main)
+        public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main, IFormFile? image)
         {
             User? user = await _context.Users
                 .FindAsync(userId);

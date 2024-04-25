@@ -1,5 +1,4 @@
-﻿using DriveForum.DatabaseContext;
-using DriveForum.Models;
+﻿using DriveForum.Models;
 
 namespace DriveForum.ViewModels
 {
@@ -12,6 +11,6 @@ namespace DriveForum.ViewModels
         public int CarId { get; set; }
         public string Title { get; set; }
         public string Main { get; set; }
-        public string? MainPhotoUrl { get; set; } = null;
+        public IFormFile? MainPhoto { get; set; } = null;
     }
 }
