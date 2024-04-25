@@ -17,6 +17,27 @@ namespace DriveForum.Controllers
         }
 
         [HttpGet]
+        public ActionResult Feed()
+        {
+            var posts = _context.UserPosts
+                .Include(u => u.User)
+                .Include(c => c.Car.Model.Brand)
+                .Include(c => c.Car.Engine)
+                .ToList();
+
+            return View(posts);
+        }
+        /*[HttpGet]
+        public ActionResult Feed()
+        {
+            return PartialView("OnePost", _context.UserPosts
+                .Include(u => u.User)
+                .Include(c => c.Car.Model.Brand)
+                .Include(c => c.Car.Engine)
+                .ToList());
+        }*/
+
+        /*[HttpGet]
         public async Task<IActionResult> Feed()
         {
             return View(_context.UserPosts
@@ -24,7 +45,7 @@ namespace DriveForum.Controllers
                 .Include(c=>c.Car.Model.Brand)
                 .Include(c=>c.Car.Engine)
                 .ToList());
-        }
+        }*/
 
         [HttpGet]
         public async Task<IActionResult> CreatePost()

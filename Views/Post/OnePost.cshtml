@@ -1,0 +1,26 @@
+﻿@model DriveForum.Models.UserPost
+<div class="mainpost">
+            <div class="upperinfo">
+                <div class="profile-info">
+                    <img class="profileimage" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+                    <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
+                </div>
+                <div class="date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
+            </div>
+            <div class="upperside">
+                <label class="carname">@Model.Car.Model.Brand.Name @Model.Car.Model.Name @Model.Car.Model.Year @Model.Car.Engine.Name @Model.Car.Engine.Capacity L</label>
+            </div>
+            <div class="maincontainer">
+                <div class="mainside">
+                    <div class="title">
+                        <label>@Model.Title</label>
+                    </div>
+                    <div class="main">
+                        <label>@Model.Main</label>
+                    </div>
+                </div>
+                <div class="carcontainer">
+                <img class="carimage" src="@Model.MainPhotoUrl" />
+                </div>
+            </div>
+        </div>

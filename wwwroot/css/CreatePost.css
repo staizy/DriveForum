@@ -15,6 +15,10 @@
     box-shadow: black 0 10px 10px;
 }
 
+option {
+    color: black;
+}
+
 .create-post-form {
     display: flex;
     flex-direction: column;

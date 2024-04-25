@@ -5,31 +5,12 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/css/SinglePost.css">
     </head>
-    <body>
-        <div class="mainpost">
-            <div class="upperinfo">
-                <div class="profile-info">
-                    <img class="profileimage" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-                    <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model[0].User?.Login">@Model[0].User?.Username</a>
-                </div>
-                <div class="date">@Model[0].PostDate.ToLongDateString() в @Model[0].PostDate.ToShortTimeString()</div>
-            </div>
-            <div class="upperside">
-                <label class="carname">@Model[0].Car.Model.Brand.Name @Model[0].Car.Model.Name @Model[0].Car.Model.Year @Model[0].Car.Engine.Name @Model[0].Car.Engine.Capacity L</label>
-            </div>
-            <div class="maincontainer">
-                <div class="mainside">
-                    <div class="title">
-                        <label>@Model[0].Title</label>
-                    </div>
-                    <div class="main">
-                        <label>@Model[0].Main</label>
-                    </div>
-                </div>
-                <div class="carcontainer">
-                <img class="carimage" src="https://lowdaily.ru/wp-content/uploads/2022/07/Nissan-Silvia-S13-CIAY-stilek-cover-1170x730.jpg" />
-                </div>
-            </div>
-        </div>
+<body>
+    @{
+        foreach (var item in Model)
+        {
+            @await Html.PartialAsync("OnePost", item) <br />
+        }
+    }
     </body>
 </html>
