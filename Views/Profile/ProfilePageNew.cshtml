@@ -1,0 +1,39 @@
+﻿@inject Auth Auth
+@model DriveForum.ViewModels.UserProfileVM
+<div class="profilemaincontainer">
+    <div class="profileandinfo">
+        <div class="profileblock">
+            <div class="profileblockimage">
+                <img class="profileblockimg" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            </div>
+            <div class="profileblockusername">
+                <span>@Model.User.Username.ToString()</span>
+            </div>
+            <div class="profileblockrole">
+                <span>@Model.User.Role.ToString()</span>
+            </div>
+        </div>
+        <div class="profileinfoblock">
+            <span>Логин: @Model.User.Login.ToString()</span><br/>
+            <span>Email: @Model.User.Email.ToString()</span><br/>
+            <span>Описание:</span><br/>
+            <span>@Model.User.Description?.ToString()</span>
+
+        @if (Auth?.User?.Id == Model?.User?.Id)
+        {
+        <form method="post" asp-action="ChangeDesc" asp-controller="Profile">
+            <input type="hidden" name="id" value="@Auth?.User?.Id"/>
+            <input type="text" name="description" value="@Model.User.Description" maxlength="149" title="Введите описание, не более 150 символов."/>
+            <input type="submit" value="Сохранить" />
+        </form>
+        }
+        </div>
+    </div>
+    <div class="profilecars">
+        Машины пользователя: 
+        @foreach (var item in Model.User.Cars)
+        {
+            <span class="profilecarname">@item.Car.Model.Brand.Name @item.Car.Model.Name @item.Car.Engine.Name @item.Car.Engine @item.Car.Model.Year </span>
+        }
+    </div>
+</div>

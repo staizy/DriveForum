@@ -1,43 +1,23 @@
 ﻿@inject Auth Auth
-@model DriveForum.Models.User
+@model DriveForum.ViewModels.UserProfileVM
 <html>
 <head>
-    <body>
-        <form method="get" asp-action="ProfilePage" asp-controller="Profile" asp-route-login="@Model?.Login">
-            <div>
-                @{
-                    if (Auth?.User?.Id == Model?.Id)
-                    {
-                        <div>
-                            <span>Ваш логин: @Auth?.User?.Login</span><br/>
-                            <span>Ваш никнейм: @Auth?.User?.Username</span><br/>
-                            <span>Ваш e-mail: @Auth?.User?.Email</span><br/>
-                            <span>Описание профиля:<br /> @Auth?.User?.Description</span><br />
-                        </div>
-                    }
-                    else
-                    {
-                        <div>
-                            <span>Никнейм пользователя: @Model?.Username</span><br/>
-                            <span>E-mail пользователя: @Model?.Email</span><br/>
-                            <span>Описание профиля:<br/> @Model?.Description</span><br/>
-                        </div>
-                    }
-                }
-            </div>
-        </form>
-        @if (Auth?.User?.Id == Model?.Id)
-        {
-        <form method="post" asp-action="ChangeDesc" asp-controller="Profile">
-            <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" name="id" value="@Auth?.User?.Id"/>
-            <input type="text" asp-for="Description" />
-            <input type="submit" value="Сохранить" />
-        </form>
-        }
-        <div>
-            <a asp-controller="Profile" asp-action="ShowUserPosts" asp-route-userId="@Model.Id">dfsg</a>
-        </div>
-    </body>
+    <link rel="stylesheet" type="text/css" href="/css/SinglePost.css" />
+    <link rel="stylesheet" type="text/css" href="/css/Profile.css" />
 </head>
+    <body>
+    @await Html.PartialAsync("ProfilePageNew", Model)
+    @{
+        if (Auth?.User?.Id == Model.User.Id)
+        {
+            <div class="addpost">
+                <a asp-controller="Post" asp-action="CreatePost"><button class="defaultbutton">Создать пост</button></a>
+            </div>
+            }
+            foreach (var item in Model.User.UserPosts)
+            {
+                @await Html.PartialAsync("../Post/OnePost", item) <br />
+            }
+        }
+    </body>
 </html>

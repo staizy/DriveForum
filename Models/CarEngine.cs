@@ -7,5 +7,10 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public float Capacity { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} {Capacity}L";
+        }
     }
 }

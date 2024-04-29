@@ -24,11 +24,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 
-
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Post}/{action=Feed}"
+    pattern: "{controller=Home}/{action=MainPage}"
     );
 
 app.Run();

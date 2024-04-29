@@ -1,5 +1,7 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
+using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +17,52 @@ namespace DriveForum.Controllers
         }
 
         [Route("/users/{login}")]
+        [HttpGet]
         public async Task<IActionResult> ProfilePage(string login)
         {
-            User? user = await _context.Users.Where(u => u.Login == login).FirstOrDefaultAsync();
+            /*User? user = await _context.Users
+                .Where(x => x.Login == login)
+                .FirstOrDefaultAsync();
+            List<UserCar> usercars = await _context.UserCars
+                .Where(u => u.User.Id == user.Id).ToListAsync();
+            List<Car> cars = await _context.Cars
+                .Include(u=> u.Engine)
+                .Include(u=> u.Model.Brand)
+                .ToListAsync();
+            List<UserPost> userposts = await _context.UserPosts
+                .Where(u => u.User.Id == user.Id)
+                .ToListAsync();*/
+
+            /*User? user = await _context.Users
+            .Where(x => x.Login == login)
+            .Include(u => u.UserPosts)
+            .Include(u => u.Cars)
+            .FirstOrDefaultAsync();
+            List<Car>? cars = await _context.Cars
+                .Include(c => c.Engine)
+                .Include(c => c.Model.Brand)
+                .ToListAsync();
             if (user != null) return View(user);
+            else return NotFound();*/
+            User? user = await _context
+                .Users
+                .Where(x => x.Login == login)
+                .Include(u => u.UserPosts)
+                .Include(u => u.Cars)
+                .FirstOrDefaultAsync();
+            List<Car>? cars = await _context
+                .Cars
+                .Include(c => c.Engine)
+                .Include(c => c.Model.Brand)
+                .ToListAsync();
+            if (user != null)
+            {
+                return View(new UserProfileVM()
+                {
+                    User = user,
+                    Cars = cars
+                });
+            }
             else return NotFound();
         }
 
@@ -33,26 +77,7 @@ namespace DriveForum.Controllers
                 return Redirect($"../users/{user.Login}");
 
             }
-            else if (description?.Length > 150)
-            {
-                ModelState.AddModelError("", "Описание не может содержать более 150 символов!");
-                return View("ProfilePage", user);
-            }
             return Redirect($"../users/{user.Login}");
-        }
-        [HttpGet]
-        public async Task<IActionResult> ShowUserPosts(int userId)
-        {
-            if (userId != null)
-            {
-                List<UserPost> userPosts = await _context.UserPosts
-                    .Include(u => u.User)
-                    .Include(c => c.Car)
-                    .Include(c => c.Car.Engine)
-                    .Include(c => c.Car.Model)
-                    .Where(u => u.User.Id == userId).ToListAsync();
-            }
-            return View();
         }
     }
 }

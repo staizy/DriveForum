@@ -138,3 +138,10 @@
 .mainside .carcontainer {
     flex: 1;
 }
+
+
+.addpost {
+    display: block;
+    text-align: right;
+    margin-right: 20px;
+}

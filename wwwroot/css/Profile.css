@@ -1,0 +1,92 @@
+﻿/* Основной контейнер для профиля */
+.profilemaincontainer {
+    padding: 25px 100px 25px 100px;
+    margin: 0 auto; /* Центрируем */
+}
+
+.profileandinfo {
+    display: block;
+    flex-direction: row;
+    padding: 20px;
+    background-color: #d73333; /* Светлый фон для контраста */ /* Ограничиваем ширину */
+    margin: 0 auto; /* Центрируем */
+}
+
+/* Основной блок профиля */
+.profileblock {
+    background-color: #444444;
+    display: flex;
+    align-items: center; /* Выравниваем элементы по центру вертикально */
+    padding: 10px;
+    flex-grow: 2;/* Разделитель */
+}
+
+/* Блок для изображения профиля */
+.profileblockimage {
+    margin-right: 15px;
+}
+
+/* Изображение профиля */
+.profileblockimg {
+    width: 100px; /* Фиксированный размер изображения */
+    height: 100px; /* Квадратная форма */
+    border-radius: 50%; /* Круглая форма */
+    object-fit: cover; /* Для лучшего отображения */
+    border: 2px solid #6c757d; /* Легкая рамка */
+}
+
+/* Блок для имени пользователя */
+.profileblockusername {
+    font-size: 24px; /* Увеличенный размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+/* Блок для роли пользователя */
+.profileblockrole {
+    flex: auto;
+    align-self: flex-end;
+    font-size: 20px; /* Уменьшенный размер шрифта */
+    color: black; /* Серая подсветка для роли */
+    text-align: right;
+}
+
+/* Информационный блок профиля */
+.profileinfoblock {
+    padding: 10px;
+    background-color: #858585; /* Белый фон */
+    flex-grow: 5;
+}
+
+/* Блок для отображения машин пользователя */
+.profilecars {
+    padding: 10px;
+    background-color: #ffffff; /* Белый фон */
+    border: 1px solid #dee2e6; /* Легкая граница */
+    border-radius: 5px; /* Закругленные углы */
+    margin-top: 10px; /* Разделение между блоками */
+}
+
+/* Стилизация списка машин */
+.profilecars span {
+    display: inline-block; /* Для аккуратного выравнивания */
+    margin-right: 5px; /* Отступ между элементами */
+}
+
+.profilecarname {
+    color: #9b3131;
+}
+
+.defaultbutton {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    background-color: #0f9605;
+    padding: 10px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.defaultbutton:hover {
+    background-color: #015a00;
+}
