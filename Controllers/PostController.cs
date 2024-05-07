@@ -76,5 +76,15 @@ namespace DriveForum.Controllers
                 .Where(u => u.Id == postid).FirstOrDefaultAsync();
             return View(userpost);
         }
+        [Route("/addcomment")]
+        public async Task<IActionResult> AddComment(int postid, int userid, string commentbody)
+        {
+            User? user = await _context.Users.FindAsync(userid);
+            UserPost? userpost = await _context.UserPosts.FindAsync(postid);
+            Comment newcomment = new() { Context = commentbody, User = user };
+            userpost.Comments.Add(newcomment);
+            await _context.SaveChangesAsync();
+            return Redirect($"/post/{postid}");
+        }
     }
 }

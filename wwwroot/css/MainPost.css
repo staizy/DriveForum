@@ -92,3 +92,16 @@
     max-width: 600px;
     border-radius: 5px;
 }
+
+.comment-form {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.comment-textarea {
+    resize: none; /* Запрет изменения размера */
+    width: 100%; /* Займает всю ширину родительского элемента */
+    max-width: 900px; /* Ограничение максимальной ширины */
+    margin: 10px auto; /* Центрирование */
+    display: block; /* Снимает ограничения по центру */
+}

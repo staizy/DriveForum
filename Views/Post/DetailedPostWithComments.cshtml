@@ -3,8 +3,7 @@
 
 <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="/css/MainPost.css" />
-
+        <link rel="stylesheet" type="text/css" href="/css/MainPost.css" />
     </head>
 
     <body>
@@ -33,6 +32,20 @@
             <div class="car-image-container">
                 <img class="car-image" src="@Model.MainPhotoUrl" />
             </div>
+        </div>
+        <div>
+            <h2>Комментарии:</h2>
+            @{foreach (var item in Model.Comments)
+                {
+                    @await Html.PartialAsync("SingleComment", item) <br />
+                }
+            }
+            <form class="comment-form" method="post" asp-action="AddComment" asp-controller="Post">
+                <input type="hidden" name="userid" value="@Auth.User.Id" />
+                <input type="hidden" name="postid" value="@Model.Id" />
+                <textarea name="commentbody" rows="4" cols="50" placeholder="Введите ваш комментарий здесь..." class="comment-textarea"></textarea>
+                <button type="submit">Отправить</button>
+            </form>
         </div>
     </div>
 

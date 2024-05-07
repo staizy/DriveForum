@@ -1,0 +1,21 @@
+﻿@model DriveForum.Models.Comment
+
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="/css/SingleComment.css" />
+
+    </head>
+</html>
+
+<div class="comment">
+    <div class="comment-header">
+        <img class="comment-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+        <a class="comment-username" href="/Profile/ProfilePage?login=@Model.User?.Login">@Model.User?.Username</a>
+    </div>
+    <div class="comment-body">
+        @Model.Context
+    </div>
+    <div class="comment-footer">
+        <span class="comment-date">@Model.CommentDate.ToLongDateString() в @Model.CommentDate.ToShortTimeString()</span>
+    </div>
+</div>
