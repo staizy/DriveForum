@@ -8,7 +8,7 @@
                 <div class="date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
             </div>
             <div class="upperside">
-                <label class="carname">@Model.Car.Model.Brand.Name @Model.Car.Model.Name @Model.Car.Model.Year @Model.Car.Engine.Name @Model.Car.Engine.Capacity L</label>
+                <label class="carname">@Model.Car.ToString()</label>
             </div>
             <div class="maincontainer">
                 <div class="mainside">

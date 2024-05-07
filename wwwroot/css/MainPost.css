@@ -48,11 +48,17 @@
 .car-details {
     font-weight: bold;
     margin: 8px 0;
+    background-color: red;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 /* Контейнер основного содержимого поста */
 .post-content {
     display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     justify-content: space-between;
     margin-top: 10px;
 }
@@ -64,18 +70,25 @@
 }
 
 .post-title {
-    font-size: 1.2em;
+    font-size: 35px;
     font-weight: bold;
+    color: black;
+    padding: 15px 0 15px 0;
+    text-align: center;
+}
+
+.post-title a {
+    color: black;
+    text-decoration: none;
 }
 
 .post-text {
-    font-size: 1em;
-    color: #444;
+    font-size: 20px;
+    color: #333;
 }
 
-/* Изображение машины */
 .car-image {
     flex: 1;
-    max-width: 200px;
+    max-width: 600px;
     border-radius: 5px;
 }

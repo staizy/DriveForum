@@ -12,7 +12,7 @@
         <div class="post-header">
             <div class="profile-info">
                 <img class="profile-pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
-                <a class="username" href="/Profile/ProfilePage?login=@Model.User?.Login">@Model.User?.Username</a>
+                <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
             </div>
             <div class="post-date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
         </div>
@@ -24,14 +24,14 @@
         <div class="post-content">
             <div class="content-main">
                 <div class="post-title">
-                    <a href="/Post/DetailedPostWithComments?postid=@Model.Id">@Model.Title</a>
+                    <a>@Model.Title</a>
                 </div>
                 <div class="post-text">
                     @Model.Main
                 </div>
             </div>
             <div class="car-image-container">
-                <img class="car-image" src="@Model.MainPhotoUrl" alt="Car Image" />
+                <img class="car-image" src="@Model.MainPhotoUrl" />
             </div>
         </div>
     </div>
