@@ -23,7 +23,7 @@
         {
         <form method="post" asp-action="ChangeDesc" asp-controller="Profile">
             <input type="hidden" name="id" value="@Auth?.User?.Id"/>
-            <input type="text" name="description" value="@Model.User.Description" maxlength="149" title="Введите описание, не более 150 символов."/>
+            <input type="text" name="description" value="@Model.User.Description" maxlength="99" title="Введите описание, не более 100 символов."/>
             <input type="submit" value="Сохранить" />
         </form>
         }
@@ -33,7 +33,7 @@
         Машины пользователя: 
         @foreach (var item in Model.User.Cars)
         {
-            <span class="profilecarname">@item.Car.Model.Brand.Name @item.Car.Model.Name @item.Car.Engine.Name @item.Car.Engine @item.Car.Model.Year </span>
+            <span class="profilecarname">@item.Car.ToString()</span>
         }
     </div>
 </div>

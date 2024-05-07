@@ -20,30 +20,6 @@ namespace DriveForum.Controllers
         [HttpGet]
         public async Task<IActionResult> ProfilePage(string login)
         {
-            /*User? user = await _context.Users
-                .Where(x => x.Login == login)
-                .FirstOrDefaultAsync();
-            List<UserCar> usercars = await _context.UserCars
-                .Where(u => u.User.Id == user.Id).ToListAsync();
-            List<Car> cars = await _context.Cars
-                .Include(u=> u.Engine)
-                .Include(u=> u.Model.Brand)
-                .ToListAsync();
-            List<UserPost> userposts = await _context.UserPosts
-                .Where(u => u.User.Id == user.Id)
-                .ToListAsync();*/
-
-            /*User? user = await _context.Users
-            .Where(x => x.Login == login)
-            .Include(u => u.UserPosts)
-            .Include(u => u.Cars)
-            .FirstOrDefaultAsync();
-            List<Car>? cars = await _context.Cars
-                .Include(c => c.Engine)
-                .Include(c => c.Model.Brand)
-                .ToListAsync();
-            if (user != null) return View(user);
-            else return NotFound();*/
             User? user = await _context
                 .Users
                 .Where(x => x.Login == login)
@@ -69,15 +45,62 @@ namespace DriveForum.Controllers
         public async Task<IActionResult> ChangeDesc(int id, string? description)
         {
             User? user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
-            if (user != null && description?.Length <= 150 || string.IsNullOrEmpty(description))
+            if (user != null && description?.Length <= 100 || string.IsNullOrEmpty(description))
             {
                 user.Description = description;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
                 return Redirect($"../users/{user.Login}");
-
             }
             return Redirect($"../users/{user.Login}");
+        }
+        [Route("users/{login}/mycars")]
+        public async Task<IActionResult> MyCars(string login)
+        {
+            User? user = await _context
+                .Users
+                .Where(x => x.Login == login)
+                .Include(u => u.Cars)
+                .FirstOrDefaultAsync();
+            List<Car>? cars = await _context
+                .Cars
+                .Include(c => c.Engine)
+                .Include(c => c.Model.Brand)
+                .ToListAsync();
+            return View(new UserProfileVM()
+            {
+                User = user,
+                Cars = cars
+            });
+        }
+        public async Task<IActionResult> DeleteCar(int carid, int userid, string login)
+        {
+            UserCar? usercar = await _context.UserCars.Where(u => u.Car.Id == carid && u.User.Id == userid).FirstOrDefaultAsync();
+            if (usercar != null)
+            {
+                _context.UserCars.Remove(usercar);
+                await _context.SaveChangesAsync();
+            }
+            return Redirect($"../users/{login}/mycars");
+        }
+        public async Task<IActionResult> AddCar(int carid, int userid, string login)
+        {
+            Car? newcar = await _context.Cars.FindAsync(carid);
+            User? user = await _context.Users.FindAsync(userid);
+            if (await _context.UserCars.AnyAsync(uc => uc.Car.Id == carid && uc.User.Id == userid))
+            {
+                TempData["ErrorMessage"] = "У вас уже есть такая машина!";
+                return Redirect($"../users/{login}/mycars");
+            }
+            if (await _context.UserCars.CountAsync(uc => uc.User.Id == userid) >= 5)
+            {
+                TempData["ErrorMessage"] = "Вы не можете иметь более 5 машин!";
+                return Redirect($"../users/{login}/mycars");
+            }
+            UserCar newusercar = new() { Car = newcar, User = user };
+            _context.UserCars.Add(newusercar);
+            await _context.SaveChangesAsync();
+            return Redirect($"../users/{login}/mycars");
         }
     }
 }

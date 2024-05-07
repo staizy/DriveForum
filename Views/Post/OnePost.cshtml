@@ -13,7 +13,7 @@
             <div class="maincontainer">
                 <div class="mainside">
                     <div class="title">
-                        <label>@Model.Title</label>
+                        <a asp-controller="Post" asp-action="DetailedPostWithComments" asp-route-postid="@Model.Id"><label>@Model.Title</label></a>
                     </div>
                     <div class="main">
                         <label>@Model.Main</label>

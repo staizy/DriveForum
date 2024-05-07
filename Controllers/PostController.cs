@@ -17,6 +17,7 @@ namespace DriveForum.Controllers
         }
 
         [HttpGet]
+        [Route("/feed")]
         public ActionResult Feed()
         {
             return View(_context?.UserPosts?
@@ -62,6 +63,18 @@ namespace DriveForum.Controllers
                 await _context.SaveChangesAsync();
             }
             return Redirect($"../users/{user.Login}");
+        }
+        [Route("/post/{postid}")]
+        public async Task<IActionResult> DetailedPostWithComments(int postid)
+        {
+            UserPost? userpost = await _context.UserPosts
+                .Include(u => u.User)
+                .Include(c => c.Car.Model.Brand)
+                .Include(c => c.Car.Engine)
+                .Include(c => c.Comments)
+                .Where(u => u.IsModerated == false)
+                .Where(u => u.Id == postid).FirstOrDefaultAsync();
+            return View(userpost);
         }
     }
 }

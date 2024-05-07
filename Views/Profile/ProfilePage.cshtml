@@ -6,13 +6,14 @@
     <link rel="stylesheet" type="text/css" href="/css/Profile.css" />
 </head>
     <body>
-    @await Html.PartialAsync("ProfilePageNew", Model)
+    @await Html.PartialAsync("ProfileMainInfo", Model)
     @{
         if (Auth?.User?.Id == Model.User.Id)
         {
             <div class="addpost">
                 <a asp-controller="Post" asp-action="CreatePost"><button class="defaultbutton">Создать пост</button></a>
             </div>
+            <a asp-asp-controller="Post" asp-action="MyCars" asp-route-login="@Auth.User.Login">moi mashini</a>
             }
             foreach (var item in Model.User.UserPosts)
             {

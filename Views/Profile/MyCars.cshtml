@@ -1,0 +1,38 @@
+﻿@inject Auth Auth
+@model DriveForum.ViewModels.UserProfileVM
+
+@{var errorMessage = TempData["ErrorMessage"];}
+
+<html>
+    <head>
+
+    </head>
+    <body>
+        @if (Auth.User.Id == Model.User.Id)
+        {
+        <h1>Ваши машины:</h1>
+        <ul>
+        @foreach (var item in Model.User.Cars)
+        {
+            <li>@item.Car.Model.Brand.Name @item.Car.Model.Name @item.Car.Engine.Name @item.Car.Engine @item.Car.Model.Year</li>
+                <a asp-controller="Profile" asp-action="DeleteCar" asp-route-carid="@item.Car.Id " asp-route-userid="@item.User.Id" asp-route-login="@Auth.User.Login"><button>delete</button></a>
+        }
+        </ul>
+        }
+        <h1>Добавить новую машину:</h1>
+    <form asp-controller="Profile" asp-action="AddCar" asp-route-userid="@Auth.User.Id" asp-route-login="@Auth.User.Login">
+        <select name="carid">
+        @{
+            foreach (var car in Model.Cars.OrderBy(c => c.Model.Brand.Name).ToList())
+            {
+                <option value="@car.Id">
+                    @car.ToString()
+                </option>
+            }
+        }
+        </select>
+        <input type="submit" value="Добавить" />
+        <h2>@errorMessage</h2>
+    </form>
+    </body>
+</html>

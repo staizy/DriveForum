@@ -1,0 +1,81 @@
+﻿/* Основные стили для отображения поста в интернете */
+
+/* Контейнер для основного поста */
+.post-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 16px;
+    margin: 16px;
+    background-color: #fff;
+}
+
+/* Информация о профиле и дате */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Информация о профиле */
+.profile-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.username {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Дата поста */
+.post-date {
+    color: #777;
+    font-size: 0.9em;
+}
+
+/* Основные данные о машине */
+.car-details {
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+/* Контейнер основного содержимого поста */
+.post-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Основная информация о посте */
+.content-main {
+    flex: 2;
+    padding-right: 16px;
+}
+
+.post-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.post-text {
+    font-size: 1em;
+    color: #444;
+}
+
+/* Изображение машины */
+.car-image {
+    flex: 1;
+    max-width: 200px;
+    border-radius: 5px;
+}
