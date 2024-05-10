@@ -32,6 +32,5 @@ namespace DriveForum.Models
         /// Список комментов, относяшихся к посту
         /// </summary>
         public List<Comment> Comments { get; set; } = new();
-        public List<Tag> Tags { get; set; } = new();
     }
 }

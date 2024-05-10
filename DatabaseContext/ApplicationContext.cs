@@ -13,7 +13,6 @@ namespace DriveForum.DatabaseContext
         public DbSet<User> Users { get; set; }
         public DbSet<UserPost> UserPosts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Tag> Tags { get; set; }
         public DbSet<UserCar> UserCars { get; set; }
 
 

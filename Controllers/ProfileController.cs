@@ -1,6 +1,7 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,7 @@ namespace DriveForum.Controllers
             return NotFound();
         }
 
-
+        [Authorize]
         public async Task<IActionResult> ChangeDesc(int id, string? description)
         {
             User? user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
