@@ -5,7 +5,6 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/css/MainPost.css" />
     </head>
-
     <body>
     <div class="post-container">
         <div class="post-header">
@@ -15,11 +14,9 @@
             </div>
             <div class="post-date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
         </div>
-
         <div class="car-details">
             @Model.Car.ToString()
         </div>
-
         <div class="post-content">
             <div class="content-main">
                 <div class="post-title">
@@ -37,17 +34,20 @@
             <h2>Комментарии:</h2>
             @{foreach (var item in Model.Comments)
                 {
-                    @await Html.PartialAsync("SingleComment", item) <br />
+                    @if (Model.User.Id != item.User.Id) {@await Html.PartialAsync("SingleComment", item) <br />}
+                    else
+                    {
+                        @await Html.PartialAsync("SingleAuthorComment", item) <br />
+                    }
                 }
             }
             <form class="comment-form" method="post" asp-action="AddComment" asp-controller="Post">
-                <input type="hidden" name="userid" value="@Auth.User.Id" />
+                <input type="hidden" name="userid" value="@Auth?.User?.Id" />
                 <input type="hidden" name="postid" value="@Model.Id" />
                 <textarea name="commentbody" rows="4" cols="50" placeholder="Введите ваш комментарий здесь..." class="comment-textarea"></textarea>
                 <button type="submit">Отправить</button>
             </form>
         </div>
     </div>
-
     </body>
 </html>

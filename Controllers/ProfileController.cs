@@ -26,21 +26,34 @@ namespace DriveForum.Controllers
                 .Include(u => u.UserPosts)
                 .Include(u => u.Cars)
                 .FirstOrDefaultAsync();
-            List<Car>? cars = await _context
-                .Cars
-                .Include(c => c.Engine)
-                .Include(c => c.Model.Brand)
-                .ToListAsync();
+
             if (user != null)
             {
+                user.UserPosts = user.UserPosts.Select(post =>
+                {
+                    if (post.Main?.Length > 130)
+                    {
+                        post.Main = $"{post.Main.Substring(0, 130)}...";
+                    }
+                    return post;
+                }).ToList();
+
+                List<Car>? cars = await _context
+                    .Cars
+                    .Include(c => c.Engine)
+                    .Include(c => c.Model.Brand)
+                    .ToListAsync();
+
                 return View(new UserProfileVM()
                 {
                     User = user,
                     Cars = cars
                 });
             }
-            else return NotFound();
+
+            return NotFound();
         }
+
 
         public async Task<IActionResult> ChangeDesc(int id, string? description)
         {
@@ -54,7 +67,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{user.Login}");
         }
-        [Route("users/{login}/mycars")]
+        [Route("users/{login}/cars")]
         public async Task<IActionResult> MyCars(string login)
         {
             User? user = await _context
@@ -66,6 +79,7 @@ namespace DriveForum.Controllers
                 .Cars
                 .Include(c => c.Engine)
                 .Include(c => c.Model.Brand)
+                .OrderBy(c => c.Model.Brand.Name)
                 .ToListAsync();
             return View(new UserProfileVM()
             {
@@ -81,7 +95,7 @@ namespace DriveForum.Controllers
                 _context.UserCars.Remove(usercar);
                 await _context.SaveChangesAsync();
             }
-            return Redirect($"../users/{login}/mycars");
+            return Redirect($"../users/{login}/cars");
         }
         public async Task<IActionResult> AddCar(int carid, int userid, string login)
         {
@@ -90,17 +104,17 @@ namespace DriveForum.Controllers
             if (await _context.UserCars.AnyAsync(uc => uc.Car.Id == carid && uc.User.Id == userid))
             {
                 TempData["ErrorMessage"] = "У вас уже есть такая машина!";
-                return Redirect($"../users/{login}/mycars");
+                return Redirect($"../users/{login}/cars");
             }
             if (await _context.UserCars.CountAsync(uc => uc.User.Id == userid) >= 5)
             {
                 TempData["ErrorMessage"] = "Вы не можете иметь более 5 машин!";
-                return Redirect($"../users/{login}/mycars");
+                return Redirect($"../users/{login}/cars");
             }
             UserCar newusercar = new() { Car = newcar, User = user };
             _context.UserCars.Add(newusercar);
             await _context.SaveChangesAsync();
-            return Redirect($"../users/{login}/mycars");
+            return Redirect($"../users/{login}/cars");
         }
     }
 }

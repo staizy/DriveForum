@@ -85,6 +85,7 @@
 .post-text {
     font-size: 20px;
     color: #333;
+    word-wrap: anywhere;
 }
 
 .car-image {

@@ -14,6 +14,7 @@
     display: flex;
     flex-direction: column; /* Stack elements vertically */
     background-color: #dddd;
+    border-radius: 10px;
 }
 
 .maincontainer {
@@ -88,26 +89,32 @@
     padding: 10px;
 }
 
+.title a {
+    text-decoration:none;
+}
+
 .title label {
     padding: 0;
     margin: auto;
     color: #000000;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.title label:hover {
+    color: #ad0000;
 }
 
 /* Main content area */
 .main {
     padding: 10px;
-    margin-top: 10px;
-    width: 400px;
+    width: auto;
+    min-width: 400px;
+    word-wrap: anywhere;
     max-height: 300px;
     font-size: 20px; /* Standard font size */
     line-height: 2; /* Adjust the line spacing for readability */
     color: #333;
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
-    display: -webkit-box; /* Flexible layout for multiple lines */
-    -webkit-box-orient: vertical; /* Vertical orientation */
-    -webkit-line-clamp: 5; /* Limit to 4 lines, adjust as needed */
 }
 
 
