@@ -10,6 +10,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         option.LoginPath = new PathString("/Auth/Login");
         option.LogoutPath = new PathString("/Home/Registration");
+        option.AccessDeniedPath = new PathString("/Error");
     });
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<Auth, Auth>();
@@ -23,11 +24,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=MainPage}"
-    );
+app.MapControllerRoute("default", "{controller=Home}/{action=MainPage}/{id:int?}");
 
 app.Run();
 

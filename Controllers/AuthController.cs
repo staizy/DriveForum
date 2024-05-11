@@ -30,7 +30,7 @@ namespace DriveForum.Controllers
         {
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
                 new ClaimsIdentity(
-                    new List<Claim> { new Claim(ClaimTypes.Name, user.Login), },
+                    new List<Claim> { new Claim(ClaimTypes.Name, user.Login), new Claim(ClaimTypes.Role, user.Role.ToString()) },
                     "Cookies"
                 )));
         }

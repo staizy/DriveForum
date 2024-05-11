@@ -1,9 +1,10 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace DriveForum.Controllers
 {
@@ -16,18 +17,6 @@ namespace DriveForum.Controllers
             _context = context;
         }
 
-        /*[HttpGet]
-        [Route("feed")]
-        public ActionResult Feed()
-        {
-            return View(_context?.UserPosts?
-                .Include(u => u.User)
-                .Include(c => c.Car.Model.Brand)
-                .Include(c => c.Car.Engine)
-                .Where(u => u.IsModerated == false)
-                .ToList());
-        }*/
-
         [HttpGet]
         [Route("feed")]
         public ActionResult Feed()
@@ -36,7 +25,7 @@ namespace DriveForum.Controllers
         .Include(u => u.User)
         .Include(c => c.Car.Model.Brand)
         .Include(c => c.Car.Engine)
-        .Where(u => u.IsModerated == false)
+        .Where(u => u.IsModerated == true)
         .ToList();
 
             foreach (var post in posts)
@@ -87,15 +76,14 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{user.Login}");
         }
-        [Route("post/{postid}")]
+        [Route("/post/{postid}")]
         public async Task<IActionResult> DetailedPostWithComments(int postid)
         {
             UserPost? userpost = await _context.UserPosts
                 .Include(u => u.User)
                 .Include(c => c.Car.Model.Brand)
                 .Include(c => c.Car.Engine)
-                .Include(c => c.Comments).ThenInclude(c=>c.User)
-                .Where(u => u.IsModerated == false)
+                .Include(c => c.Comments).ThenInclude(c => c.User)
                 .Where(u => u.Id == postid).FirstOrDefaultAsync();
             return View(userpost);
         }
@@ -107,7 +95,16 @@ namespace DriveForum.Controllers
             Comment newcomment = new() { Context = commentbody, User = user };
             userpost.Comments.Add(newcomment);
             await _context.SaveChangesAsync();
-            return Redirect($"post/{postid}");
+            return Redirect($"/post/{postid}");
+        }
+        [Authorize(Roles = "Moderator")]
+        [Route("visible")]
+        public async Task<IActionResult> VisiblePost(int postid)
+        {
+            UserPost? currpost = await _context.UserPosts.FindAsync(postid);
+            currpost.IsModerated = !currpost.IsModerated;
+            await _context.SaveChangesAsync();
+            return Redirect($"../post/{postid}");
         }
     }
 }

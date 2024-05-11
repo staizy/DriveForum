@@ -7,6 +7,15 @@
     </head>
     <body>
     <div class="post-container">
+        <a asp-controller="Post" asp-action="VisiblePost" asp-route-postid="@Model.Id">@if (Model.IsModerated)
+            {
+                <button>Скрыть</button>
+            } 
+            else
+            {
+                <button>Показать</button>
+            }
+        </a>
         <div class="post-header">
             <div class="profile-info">
                 <img class="profile-pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">

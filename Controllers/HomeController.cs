@@ -17,5 +17,10 @@ namespace DriveForum.Controllers
         {
             return View();
         }
+        [Route("/Error")]
+        public IActionResult Error()
+        {
+            return View("~/Views/Shared/AccessDenied.cshtml");
+        }
     }
 }
