@@ -2,7 +2,6 @@
 using DriveForum.Models;
 using DriveForum.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,7 +54,7 @@ namespace DriveForum.Controllers
             return NotFound();
         }
 
-        [Authorize]
+        [Authorize()]
         public async Task<IActionResult> ChangeDesc(int id, string? description)
         {
             User? user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
@@ -68,6 +67,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{user.Login}");
         }
+        [Authorize()]
         [Route("users/{login}/cars")]
         public async Task<IActionResult> MyCars(string login)
         {
@@ -88,6 +88,7 @@ namespace DriveForum.Controllers
                 Cars = cars
             });
         }
+        [Authorize()]
         public async Task<IActionResult> DeleteCar(int carid, int userid, string login)
         {
             UserCar? usercar = await _context.UserCars.Where(u => u.Car.Id == carid && u.User.Id == userid).FirstOrDefaultAsync();
@@ -98,6 +99,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{login}/cars");
         }
+        [Authorize()]
         public async Task<IActionResult> AddCar(int carid, int userid, string login)
         {
             Car? newcar = await _context.Cars.FindAsync(carid);

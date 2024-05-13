@@ -37,8 +37,8 @@ namespace DriveForum.Controllers
             }
             return View(posts);
         }
-
         [HttpGet]
+        [Authorize()]
         [Route("post/createpost")]
         public async Task<IActionResult> CreatePost()
         {
@@ -51,6 +51,7 @@ namespace DriveForum.Controllers
             });
         }
         [HttpPost]
+        [Authorize()]
         [Route("post/createpost")]
         public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main, IFormFile? image)
         {
@@ -87,6 +88,7 @@ namespace DriveForum.Controllers
                 .Where(u => u.Id == postid).FirstOrDefaultAsync();
             return View(userpost);
         }
+        [Authorize()]
         [Route("addcomment")]
         public async Task<IActionResult> AddComment(int postid, int userid, string commentbody)
         {
@@ -98,11 +100,20 @@ namespace DriveForum.Controllers
             return Redirect($"/post/{postid}");
         }
         [Authorize(Roles = "Moderator")]
-        [Route("visible")]
+        [Route("visiblepost")]
         public async Task<IActionResult> VisiblePost(int postid)
         {
             UserPost? currpost = await _context.UserPosts.FindAsync(postid);
             currpost.IsModerated = !currpost.IsModerated;
+            await _context.SaveChangesAsync();
+            return Redirect($"../post/{postid}");
+        }
+        [Authorize(Roles = "Moderator")]
+        [Route("visiblecomment")]
+        public async Task<IActionResult> VisibleComment(int commentid, int postid)
+        {
+            Comment? currcomment = await _context.Comments.FindAsync(commentid);
+            currcomment.IsHidden = !currcomment.IsHidden;
             await _context.SaveChangesAsync();
             return Redirect($"../post/{postid}");
         }

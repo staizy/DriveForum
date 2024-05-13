@@ -1,5 +1,4 @@
 ﻿using DriveForum.DatabaseContext;
-using DriveForum.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DriveForum.Controllers
@@ -12,7 +11,6 @@ namespace DriveForum.Controllers
         {
             _context = context;
         }
-        //[Route("/")]
         public IActionResult MainPage()
         {
             return View();

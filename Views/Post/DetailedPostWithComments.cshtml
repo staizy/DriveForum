@@ -7,18 +7,18 @@
     </head>
     <body>
     <div class="post-container">
-        <a asp-controller="Post" asp-action="VisiblePost" asp-route-postid="@Model.Id">@if (Model.IsModerated)
-            {
-                <button>Скрыть</button>
-            } 
-            else
-            {
-                <button>Показать</button>
-            }
-        </a>
+        @if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
+        {
+            <div class="hidepostbutton">
+            <a asp-controller="Post" asp-action="VisiblePost" asp-route-postid="@Model.Id">
+                @if (Model.IsModerated) { <button>Скрыть</button> } 
+                else { <button>Показать</button> }
+            </a>
+            </div>
+        }
         <div class="post-header">
             <div class="profile-info">
-                <img class="profile-pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+                <img class="profile-pic" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
                 <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
             </div>
             <div class="post-date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
@@ -43,16 +43,31 @@
             <h2>Комментарии:</h2>
             @{foreach (var item in Model.Comments)
                 {
-                    @if (Model.User.Id != item.User.Id) {@await Html.PartialAsync("SingleComment", item) <br />}
-                    else
+                    @if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
                     {
-                        @await Html.PartialAsync("SingleAuthorComment", item) <br />
+                        @if (Model?.User?.Id != item.User.Id) {@await Html.PartialAsync("SingleComment", item)}
+                        else { @await Html.PartialAsync("SingleAuthorComment", item)}
+                        <div class="hidecommentbutton">
+                        <a asp-controller="Post" asp-action="VisibleComment" asp-route-commentid="@item.Id" asp-route-postid="@Model?.Id">
+                            @if (!item.IsHidden) { <button>Скрыть комментарий</button> }
+                            else { <button>Показать комментарий</button> }
+                        </a>
+                        </div>
+                        <br />
+                    }
+                    else
+                    {    @if (!item.IsHidden)
+                        {
+                             @if (Model?.User?.Id != item.User.Id) {@await Html.PartialAsync("SingleComment", item)}
+                             else { @await Html.PartialAsync("SingleAuthorComment", item)}
+                             <br />
+                        }
                     }
                 }
             }
             <form class="comment-form" method="post" asp-action="AddComment" asp-controller="Post">
                 <input type="hidden" name="userid" value="@Auth?.User?.Id" />
-                <input type="hidden" name="postid" value="@Model.Id" />
+                <input type="hidden" name="postid" value="@Model?.Id" />
                 <textarea name="commentbody" rows="4" cols="50" placeholder="Введите ваш комментарий здесь..." class="comment-textarea"></textarea>
                 <button type="submit">Отправить</button>
             </form>

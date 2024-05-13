@@ -22,16 +22,25 @@
     font-weight: bold;
     text-decoration: none;
     color: #333;
+    text-shadow: none;
 }
 
 .comment-username:hover {
     text-decoration: underline;
 }
 
-.comment-body {
+.comment-body-show {
     margin-top: 10px;
-    font-size: 14px;
-    color: #555;
+    font-size: 18px;
+    color: #0a0a0a;
+    text-shadow: none;
+}
+
+.comment-body-unshow {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #ff0000;
+    text-shadow: none;
 }
 
 .comment-footer {
@@ -44,4 +53,5 @@
 .author {
     margin: 10px;
     color: #9f0404;
+    text-shadow: none;
 }

@@ -8,13 +8,12 @@
 
 <div class="comment">
     <div class="comment-header">
-        <img class="comment-avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+        <img class="comment-avatar" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
         <a class="comment-username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
         <h4 class="author">Автор поста</h4>
     </div>
-    <div class="comment-body">
-        @Model.Context
-    </div>
+    @if (!Model.IsHidden) { <div class="comment-body-show">@Model.Context</div> }
+    else { <div class="comment-body-unshow">@Model.Context</div> }
     <div class="comment-footer">
         <span class="comment-date">@Model.CommentDate.ToLongDateString() в @Model.CommentDate.ToShortTimeString()</span>
     </div>
