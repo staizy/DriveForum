@@ -106,3 +106,19 @@
     margin: 10px auto; /* Центрирование */
     display: block; /* Снимает ограничения по центру */
 }
+
+.hidepostbutton button,
+.hidecommentbutton button {
+    padding: 8px 16px;
+    background-color: #ff5733;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .hidepostbutton button:hover,
+    .hidecommentbutton button:hover {
+        background-color: #e64400;
+    }

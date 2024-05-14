@@ -1,0 +1,82 @@
+﻿<html>
+<head>
+    <link rel="stylesheet" href="/css/CarsForModerator.css">
+</head>
+<body>
+    <div class="container">
+        <form asp-controller="Car" asp-action="NewCar">
+            <table>
+                <tr>
+                    <td><label for="brand">Brand:</label></td>
+                    <td><input type="text" id="brand" name="brandname"></td>
+                </tr>
+                <tr>
+                    <td><label for="country">Country:</label></td>
+                    <td><input type="text" id="country" name="country"></td>
+                </tr>
+                <tr>
+                    <td><label for="model">Model:</label></td>
+                    <td><input type="text" id="model" name="modelname"></td>
+                </tr>
+                <tr>
+                    <td><label for="year">Year:</label></td>
+                    <td><input type="text" id="year" name="modelyear"></td>
+                </tr>
+                <tr>
+                    <td><label for="engine">Engine:</label></td>
+                    <td><input type="text" id="engine" name="enginename"></td>
+                </tr>
+                <tr>
+                    <td><label for="capacity">Capacity:</label></td>
+                    <td><input type="text" id="capacity" name="enginecapacity"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Send" /></td>
+                </tr>
+            </table>
+        </form>
+
+        <div class="data-section">
+            <h2>Cars:</h2>
+            <table class="data-table">
+                @foreach (var item in Model.Cars)
+                {
+                    <tr>
+                        <td>@item.ToString()</td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+                }
+            </table>
+
+            <h2>Brands and Models:</h2>
+            @foreach (var item in Model.Brands)
+            {
+                <table class="data-table">
+                    <tr>
+                        <th>@item.Name</th>
+                        <th><button class="delete-btn">Delete</button</th>
+                    </tr>
+                    @foreach (var itemsinitem in item.CarModels)
+                    {
+                        <tr>
+                            <td>@itemsinitem.Name @itemsinitem.Year</td>
+                            <td><button class="delete-btn">Delete</button></td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            <h2>Engines:</h2>
+            <table class="data-table">
+                @foreach (var item in Model.Engines)
+                {
+                    <tr>
+                        <td>@item.ToString()</td>
+                        <td><a asp-controller="Car" asp-action="Delete" asp-route-engineid="@item.Id"><button class="delete-btn">Delete</button></a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>
+</html>

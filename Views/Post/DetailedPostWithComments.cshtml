@@ -11,8 +11,8 @@
         {
             <div class="hidepostbutton">
             <a asp-controller="Post" asp-action="VisiblePost" asp-route-postid="@Model.Id">
-                @if (Model.IsModerated) { <button>Скрыть</button> } 
-                else { <button>Показать</button> }
+                @if (Model.IsModerated) { <button>Скрыть пост</button> } 
+                else { <button>Показать пост</button> }
             </a>
             </div>
         }
