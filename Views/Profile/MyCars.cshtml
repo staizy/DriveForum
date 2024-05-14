@@ -1,8 +1,6 @@
 ﻿@inject Auth Auth
 @model DriveForum.ViewModels.UserProfileVM
 
-@{var errorMessage = TempData["ErrorMessage"];}
-
 <html>
     <head>
 
@@ -30,7 +28,7 @@
         }
         </select>
         <input type="submit" value="Добавить" />
-        <h2>@errorMessage</h2>
+        <h2>@TempData["ErrorMessage"]</h2>
     </form>
     </body>
 </html>

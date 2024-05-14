@@ -1,9 +1,13 @@
-﻿<html>
+﻿@inject Auth Auth
+@model DriveForum.ViewModels.CarsForModerator
+
+<html>
 <head>
     <link rel="stylesheet" href="/css/CarsForModerator.css">
 </head>
 <body>
     <div class="container">
+        <h3>@TempData["Error"]</h3>
         <form asp-controller="Car" asp-action="NewCar">
             <table>
                 <tr>
@@ -43,7 +47,7 @@
                 {
                     <tr>
                         <td>@item.ToString()</td>
-                        <td><button class="delete-btn">Delete</button></td>
+                        <td><a asp-controller="Car" asp-action="Delete" asp-route-carid="@item.Id"><button class="delete-btn">Delete</button></a></td>
                     </tr>
                 }
             </table>
@@ -54,13 +58,13 @@
                 <table class="data-table">
                     <tr>
                         <th>@item.Name</th>
-                        <th><button class="delete-btn">Delete</button</th>
+                        <th><a asp-controller="Car" asp-action="Delete" asp-route-brandid="@item.Id"><button class="delete-btn">Delete</button></a></th>
                     </tr>
                     @foreach (var itemsinitem in item.CarModels)
                     {
                         <tr>
                             <td>@itemsinitem.Name @itemsinitem.Year</td>
-                            <td><button class="delete-btn">Delete</button></td>
+                            <td><a asp-controller="Car" asp-action="Delete" asp-route-modelid="@itemsinitem.Id"><button class="delete-btn">Delete</button></a></td>
                         </tr>
                     }
                 </table>

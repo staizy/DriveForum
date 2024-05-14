@@ -14,6 +14,10 @@
         </div>
         <div class="authButtons">
             @{
+                if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
+                {
+                    <a href="/moderator">Добавление/удаление машин</a>
+                }
                 if (User?.Identity?.Name == null)
                 {
                     <a asp-action="Login" asp-controller="Auth"><button>Войти</button></a>

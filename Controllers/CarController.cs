@@ -1,6 +1,7 @@
 ﻿using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using DriveForum.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace DriveForum.Controllers
 
         [HttpGet]
         [Route("moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> NewCar()
         {
             CarsForModerator carsForModerator = new()
@@ -66,6 +68,7 @@ namespace DriveForum.Controllers
         }*/
         [HttpPost]
         [Route("moderator/add")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> NewCar(string brandname, string country, string modelname, string modelyear, string enginename, string enginecapacity)
         {
             if (brandname != null && country != null && modelname == null && modelyear == null && enginename == null && enginecapacity == null)
@@ -129,21 +132,55 @@ namespace DriveForum.Controllers
             return Redirect("../moderator");
         }
         [Route("/delete")]
-        public async Task<IActionResult> Delete(int? carid, int engineid)
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> Delete(int? carid, int? engineid, int? modelid, int? brandid)
         {
-            Car? car = await _context.Cars.FindAsync(carid);
-            if (car != null)
+            try
             {
-                _context.Cars.Remove(car);
-                _context.SaveChanges();
+                if (carid != null)
+                {
+                    var car = await _context.Cars.FindAsync(carid);
+                    if (car != null)
+                    {
+                        _context.Cars.Remove(car);
+                    }
+                }
+
+                if (engineid != null)
+                {
+                    var engine = await _context.CarEngines.FindAsync(engineid);
+                    if (engine != null)
+                    {
+                        _context.CarEngines.Remove(engine);
+                    }
+                }
+
+                if (brandid != null)
+                {
+                    var brand = await _context.CarBrands.FindAsync(brandid);
+                    if (brand != null)
+                    {
+                        _context.CarBrands.Remove(brand);
+                    }
+                }
+
+                if (modelid != null)
+                {
+                    var carmodel = await _context.CarModels.FindAsync(modelid);
+                    if (carmodel != null)
+                    {
+                        _context.CarModels.Remove(carmodel);
+                    }
+                }
+                await _context.SaveChangesAsync();
+                return Redirect("../moderator");
             }
-            CarEngine? engine = await _context.CarEngines.FindAsync(engineid);
-            if (engine != null)
+            catch (Exception ex) 
             {
-                _context.CarEngines.Remove(engine);
-                _context.SaveChanges();
+                TempData["Error"] = "Ошибка при удалении. Данная машина/марка/модель/двигатель используются пользоваетлями или про них уже написали пост.";
             }
             return Redirect("../moderator");
+
         }
     }
 }
