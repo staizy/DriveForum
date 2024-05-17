@@ -1,5 +1,5 @@
 using DriveForum.DatabaseContext;
-using DriveForum.Models;
+using DriveForum.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +15,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<Auth, Auth>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
@@ -24,18 +25,6 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
-app.MapControllerRoute("default", "{controller=Home}/{action=MainPage}/{id:int?}");
+app.MapControllerRoute("default", "{controller=post}/{action=feed}/{id:int?}");
 
 app.Run();
-
-public class Auth
-{
-    public User? User { get; set; } = null;
-    public Auth(IHttpContextAccessor ctx, ApplicationContext db)
-    {
-        if (ctx.HttpContext?.User.Identity != null)
-        {
-            User = db.Users.Where(o => o.Login == ctx.HttpContext.User.Identity.Name).FirstOrDefault();
-        }
-    }
-}

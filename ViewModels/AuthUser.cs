@@ -19,7 +19,7 @@ namespace DriveForum.ViewModels
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Нельзя оставить пустым!")]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d).+", ErrorMessage = "Только латица + минимум 1 цифра!")]
+        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d).+", ErrorMessage = "Только латиница + минимум 1 цифра!")]
         [StringLength(maximumLength: 18, MinimumLength = 4, ErrorMessage = "Длина пароля должна быть от 4 до 18 символов!")]
         public string Password { get; set; }
     }

@@ -74,7 +74,7 @@ namespace DriveForum.Controllers
                 if (LoginUser != null)
                 {
                     await Auth(LoginUser);
-                    return Redirect("../Home/MainPage");
+                    return Redirect("/");
                 }
             }
             ModelState.AddModelError("", "Неправильный логин/пароль");
@@ -84,7 +84,7 @@ namespace DriveForum.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect("../Home/MainPage");
+            return Redirect("/");
         }
     }
 }

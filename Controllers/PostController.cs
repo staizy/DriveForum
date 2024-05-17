@@ -18,7 +18,7 @@ namespace DriveForum.Controllers
         }
 
         [HttpGet]
-        [Route("feed")]
+        //[Route("feed")]
         public ActionResult Feed()
         {
             var posts = _context?.UserPosts?

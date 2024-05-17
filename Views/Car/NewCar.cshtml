@@ -1,4 +1,4 @@
-﻿@inject Auth Auth
+﻿@inject DriveForum.Context.Auth Auth
 @model DriveForum.ViewModels.CarsForModerator
 
 <html>
@@ -8,75 +8,81 @@
 <body>
     <div class="container">
         <h3>@TempData["Error"]</h3>
+        <div class="instructions">
+            <h4>Для создания новой марки машины необходимо заполнить только <b>Марка</b> и <b>Страна</b>.</h4>
+            <h4>Для создания новой модели машины необходимо заполнить <b>Марка</b> и <b>Страна</b>, <b>Модель</b> и <b>Год</b>.</h4>
+            <h4>Для создания нового двигателя необходимо заполнить только <b>Двигатель</b> и <b>Объем</b>.</h4>
+            <h4>Для создания новой машины необходимо заполнить <b>все поля</b>.</h4>
+        </div>
         <form asp-controller="Car" asp-action="NewCar">
             <table>
                 <tr>
-                    <td><label for="brand">Brand:</label></td>
-                    <td><input type="text" id="brand" name="brandname"></td>
+                    <td><label for="brand">Марка:</label></td>
+                    <td><input type="text" id="brand" name="brandname" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td><label for="country">Country:</label></td>
-                    <td><input type="text" id="country" name="country"></td>
+                    <td><label for="country">Страна:</label></td>
+                    <td><input type="text" id="country" name="country" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td><label for="model">Model:</label></td>
-                    <td><input type="text" id="model" name="modelname"></td>
+                    <td><label for="model">Модель:</label></td>
+                    <td><input type="text" id="model" name="modelname" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td><label for="year">Year:</label></td>
-                    <td><input type="text" id="year" name="modelyear"></td>
+                    <td><label for="year">Год:</label></td>
+                    <td><input type="number" id="year" name="modelyear" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td><label for="engine">Engine:</label></td>
-                    <td><input type="text" id="engine" name="enginename"></td>
+                    <td><label for="engine">Двигатель:</label></td>
+                    <td><input type="text" id="engine" name="enginename" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td><label for="capacity">Capacity:</label></td>
-                    <td><input type="text" id="capacity" name="enginecapacity"></td>
+                    <td><label for="capacity">Объем:</label></td>
+                    <td><input type="number" id="capacity" name="enginecapacity" maxlength="50"></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="submit" value="Send" /></td>
+                    <td colspan="2"><input type="submit" value="Создать" /></td>
                 </tr>
             </table>
         </form>
 
         <div class="data-section">
-            <h2>Cars:</h2>
+            <h2>Машины:</h2>
             <table class="data-table">
                 @foreach (var item in Model.Cars)
                 {
                     <tr>
-                        <td>@item.ToString()</td>
-                        <td><a asp-controller="Car" asp-action="Delete" asp-route-carid="@item.Id"><button class="delete-btn">Delete</button></a></td>
+                        <td>@item.ToString() (@item.Model.Brand.Country.ToString())</td>
+                        <td><a asp-controller="Car" asp-action="Delete" asp-route-carid="@item.Id"><button class="delete-btn">Удалить</button></a></td>
                     </tr>
                 }
             </table>
 
-            <h2>Brands and Models:</h2>
+            <h2>Марки с моделями:</h2>
             @foreach (var item in Model.Brands)
             {
                 <table class="data-table">
                     <tr>
                         <th>@item.Name</th>
-                        <th><a asp-controller="Car" asp-action="Delete" asp-route-brandid="@item.Id"><button class="delete-btn">Delete</button></a></th>
+                        <th><a asp-controller="Car" asp-action="Delete" asp-route-brandid="@item.Id"><button class="delete-btn">Удалить</button></a></th>
                     </tr>
                     @foreach (var itemsinitem in item.CarModels)
                     {
                         <tr>
                             <td>@itemsinitem.Name @itemsinitem.Year</td>
-                            <td><a asp-controller="Car" asp-action="Delete" asp-route-modelid="@itemsinitem.Id"><button class="delete-btn">Delete</button></a></td>
+                            <td><a asp-controller="Car" asp-action="Delete" asp-route-modelid="@itemsinitem.Id"><button class="delete-btn">Удалить</button></a></td>
                         </tr>
                     }
                 </table>
             }
 
-            <h2>Engines:</h2>
+            <h2>Двигатели:</h2>
             <table class="data-table">
                 @foreach (var item in Model.Engines)
                 {
                     <tr>
                         <td>@item.ToString()</td>
-                        <td><a asp-controller="Car" asp-action="Delete" asp-route-engineid="@item.Id"><button class="delete-btn">Delete</button></a></td>
+                        <td><a asp-controller="Car" asp-action="Delete" asp-route-engineid="@item.Id"><button class="delete-btn">Удалить</button></a></td>
                     </tr>
                 }
             </table>

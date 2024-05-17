@@ -1,4 +1,4 @@
-﻿@inject Auth Auth
+﻿@inject DriveForum.Context.Auth Auth
 @model DriveForum.ViewModels.UserProfileVM
 
 <html>
@@ -6,7 +6,7 @@
 
     </head>
     <body>
-        @if (Auth.User.Id == Model.User.Id)
+        @if (Auth?.User.Id == Model.User.Id)
         {
         <h1>Ваши машины:</h1>
         <ul>

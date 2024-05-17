@@ -119,5 +119,49 @@ namespace DriveForum.Controllers
             await _context.SaveChangesAsync();
             return Redirect($"../users/{login}/cars");
         }
+
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> BanProfile(int userid)
+        {
+            User? user = await _context.Users.Include(u=>u.UserPosts).Include(u=>u.UserComments).FirstOrDefaultAsync();
+            if (user is not null && user.IsBanned == false)
+            {
+                user.IsBanned = true;
+                if (user.UserComments is not null)
+                {
+                    foreach (var comment in user.UserComments)
+                    {
+                        comment.IsHidden = true;
+                    }
+                }
+                if (user.UserPosts is not null)
+                {
+                    foreach (var post in user.UserPosts)
+                    {
+                        post.IsModerated = false;
+                    }
+                }
+            }
+            else if (user is not null && user.IsBanned == true)
+            {
+                user.IsBanned = false;
+                if (user.UserComments is not null)
+                {
+                    foreach (var comment in user.UserComments)
+                    {
+                        comment.IsHidden = false;
+                    }
+                }
+                if (user.UserPosts is not null)
+                {
+                    foreach (var post in user.UserPosts)
+                    {
+                        post.IsModerated = true;
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+            return Redirect($"../users/{user.Login}");
+        }
     }
 }

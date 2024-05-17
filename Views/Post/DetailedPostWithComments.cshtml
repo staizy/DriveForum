@@ -1,4 +1,4 @@
-﻿@inject Auth Auth
+﻿@inject DriveForum.Context.Auth Auth
 @model DriveForum.Models.UserPost
 
 <html>
@@ -19,29 +19,29 @@
         <div class="post-header">
             <div class="profile-info">
                 <img class="profile-pic" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
-                <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
+                <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model?.User?.Login">@Model?.User?.Username</a>
             </div>
-            <div class="post-date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
+            <div class="post-date">@Model?.PostDate.ToLongDateString() в @Model?.PostDate.ToShortTimeString()</div>
         </div>
         <div class="car-details">
-            @Model.Car.ToString()
+            @Model?.Car.ToString()
         </div>
         <div class="post-content">
             <div class="content-main">
                 <div class="post-title">
-                    <a>@Model.Title</a>
+                    <a>@Model?.Title</a>
                 </div>
                 <div class="post-text">
-                    @Model.Main
+                    @Model?.Main
                 </div>
             </div>
             <div class="car-image-container">
-                <img class="car-image" src="@Model.MainPhotoUrl" />
+                <img class="car-image" src="@Model?.MainPhotoUrl" />
             </div>
         </div>
         <div>
             <h2>Комментарии:</h2>
-            @{foreach (var item in Model.Comments)
+            @{foreach (var item in Model?.Comments)
                 {
                     @if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
                     {

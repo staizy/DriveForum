@@ -79,6 +79,7 @@ namespace DriveForum.Controllers
                     _context.CarBrands.Add(newCarBrand);
                     _context.SaveChanges();
                 }
+                else TempData["Error"] = "Внимание! Данная марка уже существует.";
             }
             else if (brandname == null && country == null && modelname == null && modelyear == null && enginename != null && enginecapacity != null)
             {
@@ -89,25 +90,25 @@ namespace DriveForum.Controllers
                     _context.CarEngines.Add(newCarEngine);
                     _context.SaveChanges();
                 }
+                else TempData["Error"] = "Внимание! Данный двигатель уже существует.";
             }
 
             else if (brandname != null && country != null && modelname != null && modelyear != null && enginename == null && enginecapacity == null)
             {
                 int modelyearint = int.Parse(modelyear);
                 var existingBrand = _context.CarBrands.Include(u=>u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
-                if (existingBrand == null)
+                if (existingBrand != null)
                 {
-                    CarBrand newCarBrand = new CarBrand() { Name = brandname, Country = country, CarModels = new() };
-                    existingBrand = newCarBrand;
-                    _context.CarBrands.Add(newCarBrand);
+                    var existingModel = existingBrand?.CarModels?.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint);
+                    if (existingModel == null)
+                    {
+                        CarModel newCarModel = new CarModel() { Name = modelname, Year = modelyearint, Brand = existingBrand };
+                        _context.CarModels.Add(newCarModel);
+                        _context.SaveChanges();
+                    }
+                    else TempData["Error"] = "Внимание! Данная модель у марки уже существует.";
                 }
-                var existingModel = existingBrand?.CarModels?.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint);
-                if (existingModel == null)
-                {
-                    CarModel newCarModel = new CarModel() { Name = modelname, Year = modelyearint, Brand = existingBrand };
-                    _context.CarModels.Add(newCarModel);
-                }
-                _context.SaveChanges();
+                else TempData["Error"] = "Внимание! Данной марки не существует, необходимо добавить.";
             }
 
             else if (brandname != null && country != null && modelname != null && modelyear != null && enginename != null && enginecapacity != null)
@@ -124,9 +125,11 @@ namespace DriveForum.Controllers
                     _context.Cars.Add(newCar);
                     _context.SaveChanges();
                 }
+                else TempData["Error"] = "Внимание! Данная машина уже существует либо вы ввели несуществующие марку, модель или двигатель, необходимо проверить.";
             }
             else
             {
+                TempData["Error"] = "Ошибка при создании. Возможно, вы не заполнили нужные поля. Прочитайте инструкцию ниже.";
                 return Redirect("../moderator");
             }
             return Redirect("../moderator");

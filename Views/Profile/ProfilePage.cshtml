@@ -1,4 +1,4 @@
-﻿@inject Auth Auth
+﻿@inject DriveForum.Context.Auth Auth
 @model DriveForum.ViewModels.UserProfileVM
 <html>
 <head>
@@ -8,6 +8,8 @@
     <body>
     @await Html.PartialAsync("ProfileMainInfo", Model)
     @{
+        <a asp-asp-controller="Profile" asp-action="BanProfile" asp-route-userid="@Model.User.Id">Забанить</a>
+
         if (Auth?.User?.Id == Model.User.Id)
         {
             <div class="addpost">
@@ -20,5 +22,6 @@
                 @await Html.PartialAsync("../Post/OnePost", item) <br />
             }
         }
+
     </body>
 </html>
