@@ -13,7 +13,7 @@
         @foreach (var item in Model.User.Cars)
         {
             <li>@item.Car.Model.Brand.Name @item.Car.Model.Name @item.Car.Engine.Name @item.Car.Engine @item.Car.Model.Year</li>
-                <a asp-controller="Profile" asp-action="DeleteCar" asp-route-carid="@item.Car.Id " asp-route-userid="@item.User.Id" asp-route-login="@Auth.User.Login"><button>delete</button></a>
+                <a asp-controller="Profile" asp-action="DeleteCar" asp-route-carid="@item.Car.Id " asp-route-userid="@item.User.Id" asp-route-login="@Auth.User.Login"><button>Удалить</button></a>
         }
         </ul>
         }

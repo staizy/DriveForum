@@ -123,7 +123,7 @@ namespace DriveForum.Controllers
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> BanProfile(int userid)
         {
-            User? user = await _context.Users.Include(u=>u.UserPosts).Include(u=>u.UserComments).FirstOrDefaultAsync();
+            User? user = await _context.Users.Include(u => u.UserPosts).Include(u => u.UserComments).Where(u => u.Id == userid).FirstOrDefaultAsync();
             if (user is not null && user.IsBanned == false)
             {
                 user.IsBanned = true;
@@ -162,6 +162,42 @@ namespace DriveForum.Controllers
             }
             await _context.SaveChangesAsync();
             return Redirect($"../users/{user.Login}");
+        }
+
+        [Authorize()]
+        public async Task<IActionResult> ChangePhoto(int userId, IFormFile photoUrl)
+        {
+            User? user = await _context.Users.FindAsync(userId);
+            if (user != null && photoUrl != null)
+            {
+                string extension = Path.GetExtension(photoUrl.FileName).ToLowerInvariant();
+                if (extension != ".jpg" && extension != ".png" && extension != ".jpeg")
+                {
+                    TempData["ErrorMessage"] = "Можно загружать только PNG, JPG, JPEG.";
+                    return Redirect($"../users/{user.Login}");
+                }
+                if (photoUrl.Length > 10 * 1024 * 1024)
+                {
+                    TempData["ErrorMessage"] = "Размер файла не может преышать 10 Мб.";
+                    return Redirect($"../users/{user.Login}");
+                }
+                string fileName = $"user_photo_{Guid.NewGuid()}_{Path.GetFileName(photoUrl.FileName)}";
+                string filePath = Path.Combine("wwwroot/images", fileName);
+                string relativeFilePath = Path.Combine("/images", fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photoUrl.CopyToAsync(stream);
+                }
+                user.PhotoUrl = relativeFilePath;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                return Redirect($"../users/{user.Login}");
+            }
+            else 
+            {
+                return Redirect("/");
+            }
         }
     }
 }

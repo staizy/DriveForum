@@ -8,7 +8,11 @@
     <body>
     @await Html.PartialAsync("ProfileMainInfo", Model)
     @{
-        <a asp-asp-controller="Profile" asp-action="BanProfile" asp-route-userid="@Model.User.Id">Забанить</a>
+        if (Auth.User.Role == DriveForum.Models.Roles.Moderator && Auth.User.Id != Model.User.Id)
+        {
+            @if (Model.User.IsBanned == false) {<a asp-asp-controller="Profile" asp-action="BanProfile" asp-route-userid="@Model.User.Id">Забанить</a>}
+            else {<a asp-asp-controller="Profile" asp-action="BanProfile" asp-route-userid="@Model.User.Id">Разбанить</a>}
+        }
 
         if (Auth?.User?.Id == Model.User.Id)
         {

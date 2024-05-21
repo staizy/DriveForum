@@ -23,7 +23,6 @@ namespace DriveForum.Controllers
         .Include(u => u.User)
         .Include(c => c.Car.Model.Brand)
         .Include(c => c.Car.Engine)
-        .Where(u => u.IsModerated == true)
         .ToList();
 
             foreach (var post in posts)

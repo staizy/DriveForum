@@ -23,6 +23,7 @@
         public List<UserPost>? UserPosts { get; set; } = new();
         public List<Comment>? UserComments { get; set; } = new();
         public List<UserCar> Cars { get; set; } = new();
+        public string? PhotoUrl { get; set; } = "";
     }
     public enum Roles
     {

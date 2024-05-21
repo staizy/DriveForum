@@ -26,7 +26,7 @@
                 <input type="text" asp-for="Title" />
 
                 <label class="post-label">Фото поста:</label>
-                <input type="file" asp-for="MainPhoto"/>
+                <input type="file" asp-for="MainPhoto" accept="image/jpeg, image/png, image/jpg" />
 
                 <label class="post-label">Основная часть:</label>
                 <textarea class="maininfo" type="text" asp-for="Main"></textarea>

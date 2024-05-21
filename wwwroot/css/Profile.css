@@ -91,3 +91,22 @@
 .defaultbutton:hover {
     background-color: #015a00;
 }
+
+.changephoto h7{
+    font-size: 15px;
+    font-weight:normal;
+}
+
+input[type=submit] {
+    padding: 5px;
+    background: #640d0d;
+    cursor: pointer;
+}
+
+.changephoto input[type=file] {
+    color: black;
+}
+
+.profileinfoblock input[type=text] {
+    width: 80%;
+}

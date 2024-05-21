@@ -18,7 +18,11 @@
             <div>
             @foreach (var item in Model)
             {
-                @await Html.PartialAsync("OnePost", item)
+                if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator) @await Html.PartialAsync("OnePost", item)
+                else
+                {
+                    if (item.IsModerated) @await Html.PartialAsync("OnePost", item)
+                }
             }
             </div>
         }

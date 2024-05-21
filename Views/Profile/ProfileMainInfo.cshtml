@@ -4,12 +4,23 @@
     <div class="profileandinfo">
         <div class="profileblock">
             <div class="profileblockimage">
-                <img class="profileblockimg" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
+                <img class="profileblockimg" src="@Model.User.PhotoUrl">
             </div>
             <div class="profileblockusername">
                 <span>@Model.User.Username.ToString()</span>
+                <div class="changephoto">
+                    <h7>Изменить фото профиля:</h7>
+                    <form asp-controller="Profile" asp-action="ChangePhoto" asp-route-userId="@Auth?.User?.Id" enctype="multipart/form-data">
+                        <input type="file" name="photoUrl" accept="image/jpeg, image/png, image/jpg"/>
+                        <input type="submit" value="Сохранить фото" />
+                    </form>
+                </div>
             </div>
             <div class="profileblockrole">
+                @if (Auth.User.Role == DriveForum.Models.Roles.Moderator){
+                if (Model.User.IsBanned == false) {<span>Не забанен</span>}
+                else {<span>Забанен</span>}
+                }
                 <span>@Model.User.Role.ToString()</span>
             </div>
         </div>
