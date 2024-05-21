@@ -7,37 +7,33 @@
 </head>
 <body>
     <div class="create-post-container">
-        @if (Auth?.User == null)
-        {
-            <div class="unauthenticated-label">
-                <label>иди</label>
-            </div>
-        }
-        else
-        {
-            <div class="create-post-box">
-                <form class="create-post-form" asp-controller="Post" asp-action="CreatePost" asp-route-userId="@Auth?.User?.Id">
-                    <label class="post-label" for="CarId">Выберите машину:</label>
-                    <select asp-for="CarId" id="CarId">
-                        @{
-                            foreach (var car in Model.Cars.OrderBy(c => c.Model.Brand.Name).ToList())
-                            {
-                                <option value="@car.Id">
-                                    @car.ToString()
-                                </option>
-                            }
+        <div class="create-post-box">
+            <h1>@TempData["ErrorMessage"]</h1>
+            <form class="create-post-form" asp-controller="Post" asp-action="CreatePost" asp-route-userId="@Auth?.User?.Id" enctype="multipart/form-data">
+                <label class="post-label">Выберите машину:</label>
+                <select asp-for="CarId" id="CarId">
+                    @{
+                        foreach (var car in Model.Cars.OrderBy(c => c.Model.Brand.Name).ToList())
+                        {
+                            <option value="@car.Id">
+                                @car.ToString()
+                            </option>
                         }
-                    </select>
+                    }
+                </select>
 
-                    <label class="post-label" for="Title">Название поста:</label>
-                    <input type="text" asp-for="Title" />
+                <label class="post-label">Название поста:</label>
+                <input type="text" asp-for="Title" />
 
-                    <label class="post-label" for="Main">Основная часть:</label>
-                    <textarea class="maininfo" type="text" asp-for="Main"></textarea>
-                    <input type="submit" value="Отправить" />
-                </form>
-            </div>
-        }
+                <label class="post-label">Фото поста:</label>
+                <input type="file" asp-for="MainPhoto"/>
+
+                <label class="post-label">Основная часть:</label>
+                <textarea class="maininfo" type="text" asp-for="Main"></textarea>
+
+                <input type="submit" value="Отправить" />
+            </form>
+        </div>
     </div>
 </body>
 </html>

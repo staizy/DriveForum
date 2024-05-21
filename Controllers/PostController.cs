@@ -2,7 +2,6 @@
 using DriveForum.Models;
 using DriveForum.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +17,6 @@ namespace DriveForum.Controllers
         }
 
         [HttpGet]
-        //[Route("feed")]
         public ActionResult Feed()
         {
             var posts = _context?.UserPosts?
@@ -53,8 +51,13 @@ namespace DriveForum.Controllers
         [HttpPost]
         [Authorize()]
         [Route("post/createpost")]
-        public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main, IFormFile? image)
+        public async Task<IActionResult> CreatePost(int carId, int userId, string title, string main, IFormFile? mainPhoto)
         {
+            if (title == null || main == null)
+            {
+                TempData["ErrorMessage"] = "Заголовок или основной текст не могут быть пустыми!";
+                return Redirect("createpost");
+            }
             User? user = await _context.Users
                 .FindAsync(userId);
             Car? car = await _context.Cars
@@ -63,14 +66,42 @@ namespace DriveForum.Controllers
                 .Include(c => c.Model.Brand)
                 .Where(c => c.Id == carId)
                 .FirstOrDefaultAsync();
+            string filePath = "";
+            string relativeFilePath = "";
+            if (user != null && car != null)
+            {
+                if (mainPhoto != null)
+                {
+                    string extension = Path.GetExtension(mainPhoto.FileName).ToLowerInvariant();
+                    if (extension != ".jpg" && extension != ".png" && extension != ".jpeg")
+                    {
+                        TempData["ErrorMessage"] = "Можно загружать только PNG, JPG, JPEG.";
+                        return Redirect("createpost");
+                    }
+                    if (mainPhoto.Length > 10 * 1024 * 1024)
+                    {
+                        TempData["ErrorMessage"] = "Размер файла не может преышать 10 Мб.";
+                        return Redirect("createpost");
+                    }
+                    string fileName = $"{Guid.NewGuid()}_{Path.GetFileName(mainPhoto.FileName)}";
+                    filePath = Path.Combine("wwwroot/images", fileName);
+                    relativeFilePath = Path.Combine("/images", fileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await mainPhoto.CopyToAsync(stream);
+                    }
+                }
+            }
             UserPost newpost = new()
             {
                 Car = car,
                 User = user,
                 Title = title,
-                Main = main
+                Main = main,
+                MainPhotoUrl = relativeFilePath
             };
-            if (user != null && newpost != null && car != null)
+            if (newpost != null)
             {
                 await _context.UserPosts.AddAsync(newpost);
                 await _context.SaveChangesAsync();
