@@ -8,6 +8,8 @@
             </div>
             <div class="profileblockusername">
                 <span>@Model.User.Username.ToString()</span>
+                @if (Auth?.User?.Id == Model?.User?.Id)
+                {
                 <div class="changephoto">
                     <h7>Изменить фото профиля:</h7>
                     <form asp-controller="Profile" asp-action="ChangePhoto" asp-route-userId="@Auth?.User?.Id" enctype="multipart/form-data">
@@ -15,9 +17,10 @@
                         <input type="submit" value="Сохранить фото" />
                     </form>
                 </div>
+                }
             </div>
             <div class="profileblockrole">
-                @if (Auth.User.Role == DriveForum.Models.Roles.Moderator){
+                @if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator){
                 if (Model.User.IsBanned == false) {<span>Не забанен</span>}
                 else {<span>Забанен</span>}
                 }

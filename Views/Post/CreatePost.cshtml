@@ -23,13 +23,13 @@
                 </select>
 
                 <label class="post-label">Название поста:</label>
-                <input type="text" asp-for="Title" />
+                <input type="text" asp-for="Title" maxlength="400"/>
 
                 <label class="post-label">Фото поста:</label>
                 <input type="file" asp-for="MainPhoto" accept="image/jpeg, image/png, image/jpg" />
 
                 <label class="post-label">Основная часть:</label>
-                <textarea class="maininfo" type="text" asp-for="Main"></textarea>
+                <textarea class="maininfo" type="text" asp-for="Main" maxlength="5000"></textarea>
 
                 <input type="submit" value="Отправить" />
             </form>

@@ -8,7 +8,7 @@
 
 <div class="comment">
     <div class="comment-header">
-        <img class="comment-avatar" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
+        <img class="comment-avatar" src="@Model.User.PhotoUrl">
         <a class="comment-username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
         <h4 class="author">Автор поста</h4>
     </div>

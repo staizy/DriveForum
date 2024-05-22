@@ -52,11 +52,11 @@
 
 /* Profile image */
 .profileimage {
-    width: 80px; /* Smaller profile image */
-    height: 80px;
-    border-radius: 50%; /* Circular image */
-    border: 2px solid #ddd; /* Border for a cleaner look */
-    margin-right: 15px; /* Space between profile image and username */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
 }
 
 /* Username with a link to the profile */

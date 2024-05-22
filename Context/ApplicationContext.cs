@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using DriveForum.Models;
 using Microsoft.EntityFrameworkCore;
-using DriveForum.Models;
 
 namespace DriveForum.DatabaseContext
 {
@@ -14,7 +13,6 @@ namespace DriveForum.DatabaseContext
         public DbSet<UserPost> UserPosts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserCar> UserCars { get; set; }
-
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

@@ -18,7 +18,7 @@
         }
         <div class="post-header">
             <div class="profile-info">
-                <img class="profile-pic" src="https://cdn-icons-png.flaticon.com/512/3682/3682281.png">
+                <img class="profile-pic" src="@Model.User.PhotoUrl">
                 <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model?.User?.Login">@Model?.User?.Username</a>
             </div>
             <div class="post-date">@Model?.PostDate.ToLongDateString() в @Model?.PostDate.ToShortTimeString()</div>
@@ -68,7 +68,7 @@
             <form class="comment-form" method="post" asp-action="AddComment" asp-controller="Post">
                 <input type="hidden" name="userid" value="@Auth?.User?.Id" />
                 <input type="hidden" name="postid" value="@Model?.Id" />
-                <textarea name="commentbody" rows="4" cols="50" placeholder="Введите ваш комментарий здесь..." class="comment-textarea"></textarea>
+                <textarea name="commentbody" rows="4" cols="50" placeholder="Введите ваш комментарий здесь..." maxlength="2000" class="comment-textarea"></textarea>
                 <button type="submit">Отправить</button>
             </form>
         </div>
