@@ -1,5 +1,4 @@
-﻿@inject DriveForum.Context.Auth Auth
-@model List<DriveForum.Models.UserPost>
+﻿@model DriveForum.ViewModels.FilteredFeed
 
 <html>
     <head>
@@ -7,25 +6,54 @@
     <link rel="stylesheet" type="text/css" href="/css/Default.css">
     </head>
 <body>
+
+    <form method="get" onsubmit="return removeEmptyParams(this);">
+        <select asp-for="@Model.CarBrand" asp-items="@Model.AvailableCarBrands">
+            <option value="">Выберите бренд:</option>
+        </select>
+        <select asp-for="@Model.CarModel" asp-items="@Model.AvailableCarModels">
+            <option value="">Выберите модель:</option>
+        </select>
+        <select asp-for="@Model.CarEngine" asp-items="@Model.AvailableCarEngines">
+            <option value="">Выберите двигатель:</option>
+        </select>
+        @if (Auth.User?.Role == DriveForum.Models.Roles.Moderator)
+        {
+            <select asp-for="@Model.IsModerated">
+                <option value="null">Неважно</option>
+                <option value="true">Прошел модерацию</option>
+                <option value="false">На модерации</option>
+            </select>
+        }
+        <input type="submit" value="Отфильтровать" />
+    </form>
     
     @{
-        if (Model.Count == 0)
+        if (Model.UserPosts.Count == 0)
         {
             <h1 style="text-align: center">Постов пока что нет!</h1>
         }
         else
         {
-            <div>
-            @foreach (var item in Model)
+            <div>               
+            @foreach (var item in Model.UserPosts)
             {
-                if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator) @await Html.PartialAsync("OnePost", item)
-                else
-                {
-                    if (item.IsModerated) @await Html.PartialAsync("OnePost", item)
-                }
+                @await Html.PartialAsync("OnePost", item)
             }
             </div>
         }
     }
+    <script>
+        function removeEmptyParams(form) {
+            const elements = form.elements;
+            for (let i = elements.length - 1; i >= 0; i--) {
+                const element = elements[i];
+                if (element.tagName === 'SELECT' && element.value === '') {
+                    element.name = '';
+                }
+            }
+            return true;
+        }
+    </script>
     </body>
 </html>

@@ -3,7 +3,6 @@ using DriveForum.Models;
 using DriveForum.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace DriveForum.Controllers
@@ -28,44 +27,9 @@ namespace DriveForum.Controllers
                 Brands = await _context.CarBrands.Include(u => u.CarModels).ToListAsync(),
                 Engines = await _context.CarEngines.ToListAsync()
             };
-            //List<Car> cars = await _context.Cars.Include(u => u.Model.Brand.CarModels).Include(u => u.Engine).ToListAsync();
             return View(carsForModerator);
         }
 
-        /*[HttpPost]
-        public async Task<IActionResult> NewCar(int carbrandid, int carmodelid, int engineid)
-        {
-            var newcarbrand = _context.CarBrands.FindAsync(carbrandid);
-            var newcarmodel = _context.CarModels.FindAsync(carmodelid);
-            var newengine = _context.CarEngines.FindAsync(engineid);
-            CarModel newcarmodel = new() { }
-            Car newcar = new() { Engine = newengine, Model = }
-            _context.Cars.Add()
-
-            return View();
-        }*/
-
-        /*public async Task<IActionResult> NewBrand(string brandname, string country)
-        {
-            if (_context.CarBrands.Where(u=>u.Name == brandname).FirstOrDefault() == null)
-            {
-                CarBrand newcarbrand = new CarBrand { Name = brandname, Country = country, CarModels = new() };
-                _context.CarBrands.Add(newcarbrand);
-                await _context.SaveChangesAsync();
-            }
-            return View();
-        }
-
-        public async Task<IActionResult> NewModel(string brandname, string country)
-        {
-            if (_context.CarBrands.Where(u => u.Name == brandname).FirstOrDefault() == null)
-            {
-                CarBrand newcarbrand = new CarBrand { Name = brandname, Country = country, CarModels = new() };
-                _context.CarBrands.Add(newcarbrand);
-                await _context.SaveChangesAsync();
-            }
-            return View();
-        }*/
         [HttpPost]
         [Route("moderator/add")]
         [Authorize(Roles = "Moderator")]
@@ -96,7 +60,7 @@ namespace DriveForum.Controllers
             else if (brandname != null && country != null && modelname != null && modelyear != null && enginename == null && enginecapacity == null)
             {
                 int modelyearint = int.Parse(modelyear);
-                var existingBrand = _context.CarBrands.Include(u=>u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
+                var existingBrand = _context.CarBrands.Include(u => u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
                 if (existingBrand != null)
                 {
                     var existingModel = existingBrand?.CarModels?.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint);
@@ -115,7 +79,7 @@ namespace DriveForum.Controllers
             {
                 float enginecapacityfloat = float.Parse(enginecapacity.Replace('.', ','));
                 int modelyearint = int.Parse(modelyear);
-                CarBrand existingBrand = _context.CarBrands.Include(u=>u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
+                CarBrand existingBrand = _context.CarBrands.Include(u => u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
                 CarModel existingModel = _context.CarModels.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint && m.Brand == existingBrand);
                 CarEngine existingEngine = _context.CarEngines.FirstOrDefault(e => e.Name == enginename && e.Capacity == enginecapacityfloat);
 
@@ -178,7 +142,7 @@ namespace DriveForum.Controllers
                 await _context.SaveChangesAsync();
                 return Redirect("../moderator");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 TempData["Error"] = "Ошибка при удалении. Данная машина/марка/модель/двигатель используются пользоваетлями или про них уже написали пост.";
             }

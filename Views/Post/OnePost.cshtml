@@ -1,26 +1,30 @@
 ﻿@model DriveForum.Models.UserPost
 <div class="mainpost">
-            <div class="upperinfo">
-                <div class="profile-info">
+    <div class="upperinfo">
+        <div class="profile-info">
             <img class="profileimage" src="@Model.User.PhotoUrl">
-                    <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
-                </div>
-                <div class="date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
+            <a class="username" asp-controller="Profile" asp-action="ProfilePage" asp-route-login="@Model.User?.Login">@Model.User?.Username</a>
+        </div>
+        @if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
+            {
+                <span>@(Model.IsModerated ? "Прошел модерацию" : "На модерации")</span>
+            }
+<div class="date">@Model.PostDate.ToLongDateString() в @Model.PostDate.ToShortTimeString()</div>
+    </div>
+    <div class="upperside">
+        <label class="carname">@Model.Car.ToString()</label>
+    </div>
+    <div class="maincontainer">
+        <div class="mainside">
+            <div class="title">
+                <a asp-controller="Post" asp-action="DetailedPostWithComments" asp-route-postid="@Model.Id"><label>@Model.Title</label></a>
             </div>
-            <div class="upperside">
-                <label class="carname">@Model.Car.ToString()</label>
-            </div>
-            <div class="maincontainer">
-                <div class="mainside">
-                    <div class="title">
-                        <a asp-controller="Post" asp-action="DetailedPostWithComments" asp-route-postid="@Model.Id"><label>@Model.Title</label></a>
-                    </div>
-                    <div class="main">
-                        <label>@Model.Main</label>
-                    </div>
-                </div>
-                <div class="carcontainer">
-                    <img class="carimage" src="@Model.MainPhotoUrl"/>
-                </div>
+            <div class="main">
+                <label>@Model.Main</label>
             </div>
         </div>
+        <div class="carcontainer">
+            <img class="carimage" src="@Model.MainPhotoUrl"/>
+        </div>
+    </div>
+</div>

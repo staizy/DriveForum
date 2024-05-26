@@ -1,8 +1,10 @@
-﻿using DriveForum.DatabaseContext;
+﻿using DriveForum.Context;
+using DriveForum.DatabaseContext;
 using DriveForum.Models;
 using DriveForum.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace DriveForum.Controllers
@@ -10,20 +12,30 @@ namespace DriveForum.Controllers
     public class PostController : Controller
     {
         ApplicationContext _context;
+        Auth _auth;
 
-        public PostController(ApplicationContext context)
+        public PostController(ApplicationContext context, Auth auth)
         {
             _context = context;
+            _auth = auth;
         }
 
         [HttpGet]
-        public ActionResult Feed()
+        public ActionResult Feed(FilteredFeed filteredFeed)
         {
-            var posts = _context?.UserPosts?
-        .Include(u => u.User)
-        .Include(c => c.Car.Model.Brand)
-        .Include(c => c.Car.Engine)
-        .ToList();
+            var query = _context?.UserPosts?
+                .Include(u => u.User)
+                .Include(c => c.Car.Model.Brand)
+                .Include(c => c.Car.Engine)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(filteredFeed.CarBrand)) query = query.Where(m => m.Car.Model.Brand.Name == filteredFeed.CarBrand);
+            if (!string.IsNullOrEmpty(filteredFeed.CarModel)) query = query.Where(m => m.Car.Model.Name == filteredFeed.CarModel);
+            if (!string.IsNullOrEmpty(filteredFeed.CarEngine)) query = query.Where(m => m.Car.Engine.Name == filteredFeed.CarEngine);
+            if (_auth.User?.Role == Roles.Moderator) query = query.Where(m => filteredFeed.IsModerated == null || m.IsModerated == filteredFeed.IsModerated);
+            else query = query.Where(m => m.IsModerated == true);
+
+            var posts = query?.ToList();
 
             foreach (var post in posts)
             {
@@ -32,8 +44,18 @@ namespace DriveForum.Controllers
                     post.Main = $"{post.Main.Substring(0, 130)}...";
                 }
             }
-            return View(posts);
+            var data = new FilteredFeed()
+            {
+                UserPosts = posts,
+                AvailableCarBrands = _context.CarBrands.Select(m => new SelectListItem(m.Name, m.Name)).ToList(),
+                AvailableCarEngines = _context.CarEngines.Select(m => new SelectListItem(m.Name, m.Name)).ToList(),
+                AvailableCarModels = !string.IsNullOrEmpty(filteredFeed.CarBrand) ? _context.CarModels.Include(m => m.Brand).Where(m => m.Brand.Name == filteredFeed.CarBrand)
+                .Select(m => new SelectListItem(m.Name, m.Name)).ToList() : new()
+            };
+            return View(data);
         }
+
+
         [HttpGet]
         [Authorize()]
         [Route("post/createpost")]
