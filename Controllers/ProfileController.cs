@@ -67,6 +67,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{user.Login}");
         }
+
         [Authorize()]
         [Route("users/{login}/cars")]
         public async Task<IActionResult> MyCars(string login)
@@ -88,6 +89,7 @@ namespace DriveForum.Controllers
                 Cars = cars
             });
         }
+
         [Authorize()]
         public async Task<IActionResult> DeleteCar(int carid, int userid, string login)
         {
@@ -99,6 +101,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{login}/cars");
         }
+
         [Authorize()]
         public async Task<IActionResult> AddCar(int carid, int userid, string login)
         {

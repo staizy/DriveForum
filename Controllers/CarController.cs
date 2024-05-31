@@ -16,7 +16,6 @@ namespace DriveForum.Controllers
             _context = context;
         }
 
-        [HttpGet]
         [Route("moderator")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> NewCar()
@@ -30,29 +29,28 @@ namespace DriveForum.Controllers
             return View(carsForModerator);
         }
 
-        [HttpPost]
         [Route("moderator/add")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> NewCar(string brandname, string country, string modelname, string modelyear, string enginename, string enginecapacity)
         {
             if (brandname != null && country != null && modelname == null && modelyear == null && enginename == null && enginecapacity == null)
             {
-                if ((_context.CarBrands.FirstOrDefault(b => b.Name == brandname && b.Country == country)) == null)
+                if ((await _context.CarBrands.FirstOrDefaultAsync(b => b.Name == brandname && b.Country == country)) == null)
                 {
                     CarBrand newCarBrand = new CarBrand() { Name = brandname, Country = country, CarModels = new() };
-                    _context.CarBrands.Add(newCarBrand);
-                    _context.SaveChanges();
+                    await _context.CarBrands.AddAsync(newCarBrand);
+                    await _context.SaveChangesAsync();
                 }
                 else TempData["Error"] = "Внимание! Данная марка уже существует.";
             }
             else if (brandname == null && country == null && modelname == null && modelyear == null && enginename != null && enginecapacity != null)
             {
                 float enginecapacityfloat = float.Parse(enginecapacity.Replace('.', ','));
-                if ((_context.CarEngines.FirstOrDefault(e => e.Name == enginename && e.Capacity == enginecapacityfloat) == null))
+                if ((await _context.CarEngines.FirstOrDefaultAsync(e => e.Name == enginename && e.Capacity == enginecapacityfloat) == null))
                 {
                     CarEngine newCarEngine = new CarEngine() { Name = enginename, Capacity = enginecapacityfloat };
-                    _context.CarEngines.Add(newCarEngine);
-                    _context.SaveChanges();
+                    await _context.CarEngines.AddAsync(newCarEngine);
+                    await _context.SaveChangesAsync();
                 }
                 else TempData["Error"] = "Внимание! Данный двигатель уже существует.";
             }
@@ -60,15 +58,15 @@ namespace DriveForum.Controllers
             else if (brandname != null && country != null && modelname != null && modelyear != null && enginename == null && enginecapacity == null)
             {
                 int modelyearint = int.Parse(modelyear);
-                var existingBrand = _context.CarBrands.Include(u => u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
+                var existingBrand = await _context.CarBrands.Include(u => u.CarModels).FirstOrDefaultAsync(b => b.Name == brandname && b.Country == country);
                 if (existingBrand != null)
                 {
                     var existingModel = existingBrand?.CarModels?.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint);
                     if (existingModel == null)
                     {
                         CarModel newCarModel = new CarModel() { Name = modelname, Year = modelyearint, Brand = existingBrand };
-                        _context.CarModels.Add(newCarModel);
-                        _context.SaveChanges();
+                        await _context.CarModels.AddAsync(newCarModel);
+                        await _context.SaveChangesAsync();
                     }
                     else TempData["Error"] = "Внимание! Данная модель у марки уже существует.";
                 }
@@ -79,15 +77,15 @@ namespace DriveForum.Controllers
             {
                 float enginecapacityfloat = float.Parse(enginecapacity.Replace('.', ','));
                 int modelyearint = int.Parse(modelyear);
-                CarBrand existingBrand = _context.CarBrands.Include(u => u.CarModels).FirstOrDefault(b => b.Name == brandname && b.Country == country);
-                CarModel existingModel = _context.CarModels.FirstOrDefault(m => m.Name == modelname && m.Year == modelyearint && m.Brand == existingBrand);
-                CarEngine existingEngine = _context.CarEngines.FirstOrDefault(e => e.Name == enginename && e.Capacity == enginecapacityfloat);
+                CarBrand existingBrand = await _context.CarBrands.Include(u => u.CarModels).FirstOrDefaultAsync(b => b.Name == brandname && b.Country == country);
+                CarModel existingModel = await _context.CarModels.FirstOrDefaultAsync(m => m.Name == modelname && m.Year == modelyearint && m.Brand == existingBrand);
+                CarEngine existingEngine = await _context.CarEngines.FirstOrDefaultAsync(e => e.Name == enginename && e.Capacity == enginecapacityfloat);
 
                 if (existingBrand != null && existingModel != null && existingEngine != null)
                 {
                     Car newCar = new Car() { Model = existingModel, Engine = existingEngine };
-                    _context.Cars.Add(newCar);
-                    _context.SaveChanges();
+                    await _context.Cars.AddAsync(newCar);
+                    await _context.SaveChangesAsync();
                 }
                 else TempData["Error"] = "Внимание! Данная машина уже существует либо вы ввели несуществующие марку, модель или двигатель, необходимо проверить.";
             }
@@ -98,6 +96,7 @@ namespace DriveForum.Controllers
             }
             return Redirect("../moderator");
         }
+
         [Route("/delete")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> Delete(int? carid, int? engineid, int? modelid, int? brandid)
@@ -147,7 +146,6 @@ namespace DriveForum.Controllers
                 TempData["Error"] = "Ошибка при удалении. Данная машина/марка/модель/двигатель используются пользоваетлями или про них уже написали пост.";
             }
             return Redirect("../moderator");
-
         }
     }
 }

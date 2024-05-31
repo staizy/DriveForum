@@ -55,7 +55,6 @@ namespace DriveForum.Controllers
             return View(data);
         }
 
-
         [HttpGet]
         [Authorize()]
         [Route("post/createpost")]
@@ -69,6 +68,7 @@ namespace DriveForum.Controllers
                 Cars = _context.Cars.ToList(),
             });
         }
+
         [HttpPost]
         [Authorize()]
         [Route("post/createpost")]
@@ -129,6 +129,7 @@ namespace DriveForum.Controllers
             }
             return Redirect($"../users/{user.Login}");
         }
+
         [Route("/post/{postid}")]
         public async Task<IActionResult> DetailedPostWithComments(int postid)
         {
@@ -140,6 +141,7 @@ namespace DriveForum.Controllers
                 .Where(u => u.Id == postid).FirstOrDefaultAsync();
             return View(userpost);
         }
+
         [Authorize()]
         [Route("addcomment")]
         public async Task<IActionResult> AddComment(int postid, int userid, string commentbody)
@@ -151,6 +153,7 @@ namespace DriveForum.Controllers
             await _context.SaveChangesAsync();
             return Redirect($"/post/{postid}");
         }
+
         [Authorize(Roles = "Moderator")]
         [Route("visiblepost")]
         public async Task<IActionResult> VisiblePost(int postid)
@@ -160,6 +163,7 @@ namespace DriveForum.Controllers
             await _context.SaveChangesAsync();
             return Redirect($"../post/{postid}");
         }
+
         [Authorize(Roles = "Moderator")]
         [Route("visiblecomment")]
         public async Task<IActionResult> VisibleComment(int commentid, int postid)

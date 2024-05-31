@@ -15,7 +15,7 @@
             @{
                 if (Auth?.User?.Role == DriveForum.Models.Roles.Moderator)
                 {
-                    <a href="/moderator">Добавление/удаление машин</a>
+                    <a asp-action="NewCar" asp-controller="Car">Добавление/удаление машин</a>
                 }
                 if (User?.Identity?.Name == null)
                 {

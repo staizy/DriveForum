@@ -5,14 +5,6 @@ namespace DriveForum.ViewModels
 {
     public class FilteredFeed
     {
-        /*public List<UserPost> UserPosts { get; set; }
-        public List<CarBrand> AvailableCarBrands { get; set; }
-        public CarBrand CarBrand { get; set; }
-        public List<CarModel> AvailableCarModels { get; set; }
-        public CarModel CarModel { get; set; }
-        public List<CarEngine> AvailableCarEngines { get; set; }
-        public CarEngine CarEngine { get; set; }*/
-
         public List<UserPost> UserPosts { get; set; }
         public List<SelectListItem> AvailableCarBrands { get; set; }
         public string? CarBrand { get; set; }

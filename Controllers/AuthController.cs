@@ -80,6 +80,7 @@ namespace DriveForum.Controllers
             ModelState.AddModelError("", "Неправильный логин/пароль");
             return View("Login");
         }
+
         [Authorize()]
         public async Task<IActionResult> Logout()
         {
